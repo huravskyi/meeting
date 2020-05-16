@@ -31,7 +31,6 @@ public class MailConfig {
         senderImpl.setPort(port);
         senderImpl.setUsername(username);
         senderImpl.setPassword(password);
-
         Properties properties = senderImpl.getJavaMailProperties();
         properties.setProperty("mail.transport.protocol", protocol);
         properties.setProperty("mail.debug", debug);

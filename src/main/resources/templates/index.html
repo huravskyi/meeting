@@ -1,20 +1,33 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
 
 <head>
+    <meta charset="UTF-8">
+    <title>Dating World</title>
     <link href="https://cdn.jsdelivr.net/npm/@mdi/font@3.x/css/materialdesignicons.min.css" rel="stylesheet">
     <link href='https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons' rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
-    <meta charset="UTF-8">
+    <link  rel="icon" href="https://firebasestorage.googleapis.com/v0/b/meeting-app-af0af.appspot.com/o/logo2.jpg?alt=media&token=2e163cbc-2c7b-4626-aef9-993938119ef1">
+    <link  rel="shortcut icon" href="https://firebasestorage.googleapis.com/v0/b/meeting-app-af0af.appspot.com/o/logo2.jpg?alt=media&token=2e163cbc-2c7b-4626-aef9-993938119ef1">
+    <meta  name="description" content="Сайт новых знакомств, найди свою половинку">
+
+    <meta property="og:title" content="Dating World сайт новых знакомств">
+    <meta property="og:description" content="Сайт новых знакомств, найди свою половинку">
+    <meta property="og:type" content="website">
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image"
+          content="https://firebasestorage.googleapis.com/v0/b/meeting-app-af0af.appspot.com/o/login_backgraund_min.jpg?alt=media&token=46d4a7f9-2897-4ebf-bcb4-806f1bd43431">
+
+
     <script th:inline="javascript">
-        var frontendData = [[${frontendData}]];
-        var profile = [# th:utext="${profile}" /];
-        console.log(frontendData)
+        var userProfile = [# th:utext="${profile}" /];
+        var chats = [# th:utext="${chats}" /];
+        var chatsBlock = [# th:utext="${chatsBlock}" /];
     </script>
+
 </head>
 <body>
 <div id="app"></div>
-
 <script th:src="${isDevMode} ? 'http://localhost:8000/main.js' : '/js/main.js'">
 </script>
 </body>

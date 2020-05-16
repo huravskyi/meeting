@@ -1,10 +1,10 @@
 package com.newcode.meeting.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
 import com.newcode.meeting.domain.User;
-import com.newcode.meeting.sevice.UserService;
+import com.newcode.meeting.domain.Views;
+import com.newcode.meeting.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -12,33 +12,21 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-
 @Controller
 @RequestMapping("/")
 public class RegistrationController {
     @Value("${spring.profile.active:prod}")
     private String profile;
-
     private final UserService userService;
 
-    private final ObjectWriter profileWriter;
-
-
     @Autowired
-    public RegistrationController(UserService userService, ObjectMapper mapper) {
+    public RegistrationController(UserService userService) {
         this.userService = userService;
-        ObjectMapper objectMapper = mapper.setConfig(mapper.getSerializationConfig());
-
-        this.profileWriter = objectMapper.writer();
     }
 
     @GetMapping("/login")
-    public String login(Model model, @AuthenticationPrincipal User user) throws JsonProcessingException {
-        if (user != null) {
-            return "redirect:/";
-        }
-        helper(model, new User(), new HashMap<Object, Object>());
+    public String login(Model model){
+        helper(model);
         return "index";
     }
 
@@ -48,72 +36,82 @@ public class RegistrationController {
             @RequestParam("email") String email
     ) throws JsonProcessingException {
         if (userService.passwordReset(email)) {
-            helper(model, new User(), new HashMap<Object, Object>());
-            return "redirect:/login";
+            helper(model);
+            return "redirect:/login/forgotPassword?success";
         } else {
-            return "redirect:/registration?notFound";
+            return "redirect:/login/forgotPassword?notFound";
         }
     }
 
     @GetMapping("/login/forgotPassword")
-    public String forgot(
-            Model model,
-            @AuthenticationPrincipal User user
-    ) throws JsonProcessingException {
-        if (user != null) {
-            return "/";
-        }
-        helper(model, new User(), new HashMap<Object, Object>());
+    public String getUserForgotPassword(Model model){
+        helper(model);
         return "index";
     }
 
-    @GetMapping("/registration")
-    public String registration(Model model, @AuthenticationPrincipal User user) throws JsonProcessingException {
-        HashMap<Object, Object> data = new HashMap<>();
-        if (user != null) {
-            helper(model, user, data);
-            return "redirect:/";
-        }
-
-        helper(model, new User(), data);
-        return "index";
+    @GetMapping("/registration/sendToMail")
+    public String sendToMail(@AuthenticationPrincipal User user) {
+        userService.sendToMail(user);
+        return "redirect:/";
     }
 
     @PostMapping("/registration")
-    public String addUser(User user, Model model) {
-        if (userService.addUser(user)) {
+    public String addUser(
+            @RequestParam String username,
+            @RequestParam String password,
+            @RequestParam String date,
+            @RequestParam String email,
+            @RequestParam String gender,
+            @RequestParam String city,
+            @RequestParam String region,
+            @RequestParam String country
+    ) {
+        if (userService.addUser(username, password, email, date, gender, city, region, country)) {
+            return "redirect:/registration?success";
         } else {
             return "redirect:/registration?exist";
         }
-        return "redirect:/login";
     }
 
-    @GetMapping("/activate/{registration}/{code}")
-    public String activate(Model model, @PathVariable String code, @PathVariable String registration) throws JsonProcessingException {
-        HashMap<Object, Object> data = new HashMap<>();
-        data.put("confirm", "Подтвердите аккаунт пожалуйста");
-        boolean isActivation = userService.isActivationUser(code);
-        if (isActivation) {
-            data.put("registration", "User successfully activation");
-        } else {
-            data.put("registration", "User not successfully activation");
-        }
-        helper(model, new User(), data);
+    @GetMapping("/registration")
+    public String get(Model model){
+        helper(model);
         return "index";
     }
 
-    private void helper(Model model, User user, HashMap<Object, Object> data) throws JsonProcessingException {
-        String prof = "null";
-        Object dataTo = "null";
+    @JsonView(Views.FullProfile.class)
+    @GetMapping("/activate/registrationNewEmail/{code}")
+    public String activateNewEmail(
+            @PathVariable String code
+    ) {
+        boolean isActivation = userService.isActivationEmail(code);
+        if (isActivation) {
+            return "redirect:/settings?isActivationEmail";
+        } else {
+            return "redirect:/settings?isActivationEmailerr";
+        }
+    }
 
-        if (user.getId() != null)
-            prof = profileWriter.writeValueAsString(user.toString());
 
-        if (data != null)
-            dataTo = data;
+    @JsonView(Views.FullProfile.class)
+    @GetMapping("/activate/registration/{code}")
+    public String activate(
+            Model model,
+            @PathVariable String code
+    ){
+        boolean isActivation = userService.isActivationUser(code);
+        helper(model);
+        if (isActivation) {
+            return "redirect:/?isActivation";
+        } else {
+            return "redirect:/?isActivationerr";
+        }
+    }
 
-        model.addAttribute("profile", prof);
-        model.addAttribute("frontendData", dataTo);
+    private void helper(Model model)  {
+        model.addAttribute("profile", "null");
+        model.addAttribute("chats", "null");
+        model.addAttribute("chatsBlock", "null");
         model.addAttribute("isDevMode", "dev".equals(profile));
     }
 

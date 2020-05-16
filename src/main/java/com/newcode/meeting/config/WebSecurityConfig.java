@@ -1,6 +1,6 @@
 package com.newcode.meeting.config;
 
-import com.newcode.meeting.sevice.UserService;
+import com.newcode.meeting.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,19 +35,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/", "/login/forgotPassword","login?notFound", "/home", "/registration", "/activate/**").permitAll()
-                .anyRequest()
-                .authenticated()
+                    .antMatchers("/", "/login/forgotPassword", "/home", "/registration", "/activate/**")
+                    .permitAll().anyRequest().authenticated()
                 .and()
-                .formLogin()
-                .loginPage("/login")
-                .usernameParameter("email")
-                .permitAll()
+                    .formLogin()
+                    .loginPage("/login")
+                    .usernameParameter("email")
+                    .permitAll()
                 .and()
-                .logout()
-                .permitAll()
+                     .rememberMe().tokenValiditySeconds(2004800)
                 .and()
-                .csrf().disable();
+                    .logout()
+                    .permitAll()
+                .and()
+                    .csrf().disable();
     }
 
     @Override
