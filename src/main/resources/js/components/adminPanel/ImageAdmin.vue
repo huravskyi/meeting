@@ -73,7 +73,7 @@
 <script>
     import {mapActions} from "vuex";
     import LazyLoader from "../pageViews/LazyLoader.vue";
-    import setUsers from "../../helper/setUsers";
+    import setUsers from "../../util/helper/setUsers";
     import DialogAdmin from "./DialogAdmin.vue";
 
     export default {

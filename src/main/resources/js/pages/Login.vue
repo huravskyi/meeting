@@ -14,7 +14,7 @@
                     <p class="title red--text" :v-model="error">{{err}}</p>
                     <h1 class="title">Войти</h1>
                     <v-text-field
-                            autocomplete="username"
+                            autocomplete="email"
                             label="Email"
                             v-model="email"
                             required

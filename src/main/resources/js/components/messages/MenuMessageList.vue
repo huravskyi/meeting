@@ -38,10 +38,10 @@
     </div>
 </template>
 <script>
-    const accountPreview = require('../../image/accountPreview.png')
+    const accountPreview = ('https://firebasestorage.googleapis.com/v0/b/meeting-app-af0af.appspot.com/o/accountPreview.png?alt=media&token=8c1044c0-b371-4bf2-91e6-e0e7daf87c87')
 
     import ButtonMenuMessage from "./ButtonMenuMessage.vue";
-    import getMyAge from "../../helper/getAge";
+    import getMyAge from "../../util/helper/getAge";
 
     export default {
         props: ['tab', 'selected', 'chats', 'chatsBlock', 'userProfile'],

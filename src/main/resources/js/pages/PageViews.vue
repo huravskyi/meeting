@@ -23,8 +23,8 @@
 
 <script>
     import {mapActions, mapState} from "vuex";
-    import getLastVisit from "../helper/getLastVisit";
-    import getMyAge from "../helper/getAge";
+    import getLastVisit from "../util/helper/getLastVisit";
+    import getMyAge from "../util/helper/getAge";
     import PageViewsRow from "../components/pageViews/PageViewsRow.vue";
 
     export default {

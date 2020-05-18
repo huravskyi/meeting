@@ -50,7 +50,7 @@
 <script>
     import {mapActions, mapMutations, mapState} from "vuex";
     import CardView from "../components/searchCard/CardView.vue";
-    import img from "../image/load.gif"
+    const img = ('https://firebasestorage.googleapis.com/v0/b/meeting-app-af0af.appspot.com/o/load.gif?alt=media&token=8923efec-c9c1-4234-9ea7-ed1235077fa8')
     import LazyLoader from "../components/pageViews/LazyLoader.vue";
 
     export default {
@@ -90,14 +90,14 @@
             }),
             getUsers() {
                 if (this.tab === 0) {
-                    if (this.userCoincidence.length !== 0 || this.userCoincidence.users.length !== 0) {
+                    if (this.userCoincidence.length !== 0 && this.userCoincidence.listFromDto.length !== 0) {
                         const users = this.userCoincidence.listFromDto.filter(item => item.meLiked)
                         return this.setTextAbout(users, this.tab, this.aboutSympathyText, this.aboutSympathyNull)
                     } else {
                         this.$set(this.tabList[this.tab], 'about', this.aboutSympathyNull)
                     }
                 } else {
-                    if (this.usersLikeMy.length !== 0 || this.usersLikeMy.listFromDto.length !== 0) {
+                    if (this.usersLikeMy.length !== 0 && this.usersLikeMy.listFromDto.length !== 0) {
                         const users = this.usersLikeMy.listFromDto.filter(item => item.meLiked)
                         return this.setTextAbout(users, this.tab, this.aboutLikeText, this.aboutLikeNull)
                     } else {
@@ -171,14 +171,11 @@
                     }
                 )
             },
-
         }
     }
 </script>
 
 <style scoped>
-
-
     .word {
         width: 160px;
         background: #f0f0f0;

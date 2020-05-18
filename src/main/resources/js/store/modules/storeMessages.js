@@ -1,11 +1,11 @@
 import chatApi from '../../api/chat.js'
-import scrollToElement from "../../helper/scrollToElement";
+import scrollToElement from "../../util/helper/scrollToElement";
 import Vue from 'vue'
 import userApi from "../../api/user";
-import getIndexForChatBlock from "../../helper/getIndexChat";
-import setMessage from "../../helper/setMessage";
-import setMessageToChat from "../../helper/setMessagesToChat";
-import findChat from "../../helper/findChat";
+import getIndexForChatBlock from "../../util/helper/getIndexChat";
+import setMessage from "../../util/helper/setMessage";
+import setMessageToChat from "../../util/helper/setMessagesToChat";
+import findChat from "../../util/helper/findChat";
 
 export default {
     state: {

@@ -129,10 +129,10 @@
 
 <script>
     import {mapActions, mapMutations, mapState} from "vuex";
-    import scrollToElement from "../../helper/scrollToElement";
+    import scrollToElement from "../../util/helper/scrollToElement";
     import SmileMessage from "./SmileMessage.vue";
 
-    const load = require("../../image/load.gif")
+    const load = ("https://firebasestorage.googleapis.com/v0/b/meeting-app-af0af.appspot.com/o/load.gif?alt=media&token=8923efec-c9c1-4234-9ea7-ed1235077fa8")
     export default {
         components: {SmileMessage},
         props: ['selected', 'chats', 'userProfile', 'tab', 'isLoading', 'chatBlock', 'isMobile'],

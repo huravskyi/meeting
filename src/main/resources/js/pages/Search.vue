@@ -54,7 +54,7 @@
     import LikedButton from "../components/profile/LikedButton.vue";
     import CardView from "../components/searchCard/CardView.vue";
     import LazyLoader from "../components/pageViews/LazyLoader.vue";
-    import getAge from "../helper/getAge";
+    import getAge from "../util/helper/getAge";
     import AutocompleteCity from "../components/profile/AutocompleteCity.vue";
 
     export default {

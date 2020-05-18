@@ -133,12 +133,12 @@
 
 <script>
     import {mapActions, mapState} from 'vuex'
-    import getAge from '../../helper/getAge'
-    import getLastVisit from "../../helper/getLastVisit";
+    import getAge from '../../util/helper/getAge'
+    import getLastVisit from "../../util/helper/getLastVisit";
     import LikedButton from "./LikedButton.vue";
     import ChooseAge from "./ChooseAge.vue";
     import AutocompleteCity from "./AutocompleteCity.vue";
-    import getLocate from "../../helper/getLocate";
+    import getLocate from "../../util/helper/getLocate";
 
     export default {
         components: {AutocompleteCity, ChooseAge, LikedButton},

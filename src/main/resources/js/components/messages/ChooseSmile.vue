@@ -25,7 +25,7 @@
 </template>
 
 <script>
-    import showSmile from "../../helper/showSmile";
+    import showSmile from "../../util/helper/showSmile";
 
     export default {
         name: "ChooseSmile",

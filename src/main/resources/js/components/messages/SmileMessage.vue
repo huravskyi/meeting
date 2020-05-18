@@ -7,7 +7,7 @@
 </template>
 
 <script>
-    import showSmile from "../../helper/showSmile";
+    import showSmile from "../../util/helper/showSmile";
     import Media from "../media/Media.vue";
 
     export default {

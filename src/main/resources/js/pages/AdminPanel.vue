@@ -14,11 +14,7 @@
             </v-tabs>
             <div>
                 <image-admin v-if="tab === 0"></image-admin>
-
                 <users-list-for-admin v-if="tab === 1"></users-list-for-admin>
-
-                <complaints v-if="tab === 2"></complaints>
-
             </div>
         </v-card>
     </v-container>
@@ -27,10 +23,9 @@
 <script>
     import ImageAdmin from "../components/adminPanel/ImageAdmin.vue";
     import UsersListForAdmin from "../components/adminPanel/UsersListForAdmin.vue";
-    import Complaints from "../components/adminPanel/Complaints.vue";
     export default {
         name: "AdminPanel",
-        components: {Complaints, UsersListForAdmin, ImageAdmin},
+        components: {UsersListForAdmin, ImageAdmin},
         data: () => ({
             tab: null,
             tabList: [

@@ -103,11 +103,11 @@
 
 <script>
     import userApi from "../../api/user";
-    import getMyAge from "../../helper/getAge";
+    import getMyAge from "../../util/helper/getAge";
     import {mapActions} from "vuex";
 
-    const accountPreviewMin = require('../../image/accountPreview-min.png')
-    const accountPreview = require('../../image/accountPreview.png')
+    const accountPreviewMin = ('https://firebasestorage.googleapis.com/v0/b/meeting-app-af0af.appspot.com/o/accountPreview-min.png?alt=media&token=209837ce-9ee9-47a7-ab45-7ba39d551f82')
+    const accountPreview = ('https://firebasestorage.googleapis.com/v0/b/meeting-app-af0af.appspot.com/o/accountPreview.png?alt=media&token=8c1044c0-b371-4bf2-91e6-e0e7daf87c87')
 
     export default {
         name: "UsersListForAdmin",

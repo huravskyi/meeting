@@ -94,7 +94,7 @@
     import ChooseAge from "../components/profile/ChooseAge.vue";
     import AutocompleteCity from "../components/profile/AutocompleteCity.vue";
     import ForgotPassword from "./ForgotPassword.vue";
-    import getLocate from "../helper/getLocate";
+    import getLocate from "../util/helper/getLocate";
 
     export default {
         name: "Registration",

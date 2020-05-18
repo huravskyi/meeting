@@ -39,8 +39,6 @@
 <script>
     import ImageSlide from "../components/profile/ImageSlide.vue";
 
-    const axios = require('axios');
-
     import UserNameAndCity from "../components/profile/UserNameAndCity.vue";
     import About from "../components/profile/About.vue";
     import ImageMain from "../components/profile/ImageMain.vue";

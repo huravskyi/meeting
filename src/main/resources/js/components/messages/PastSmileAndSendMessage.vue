@@ -37,7 +37,7 @@
 
 <script>
     import ChooseSmile from "./ChooseSmile.vue";
-    import showSmile from "../../helper/showSmile";
+    import showSmile from "../../util/helper/showSmile";
 
     export default {
         components: {ChooseSmile},

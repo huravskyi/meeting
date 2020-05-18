@@ -88,8 +88,8 @@
 <script>
     import UserGuest from "./imageMain/userGuest.vue"
 
-    const accountPreview = require('../../image/accountPreview.png')
-    const accountPreview_min = require('../../image/accountPreview-min.png')
+    const accountPreview = ('https://firebasestorage.googleapis.com/v0/b/meeting-app-af0af.appspot.com/o/accountPreview.png?alt=media&token=8c1044c0-b371-4bf2-91e6-e0e7daf87c87')
+    const accountPreview_min = ('https://firebasestorage.googleapis.com/v0/b/meeting-app-af0af.appspot.com/o/accountPreview-min.png?alt=media&token=209837ce-9ee9-47a7-ab45-7ba39d551f82')
     import {Cropper, RectangleStencil} from 'vue-advanced-cropper'
     import {mapState, mapActions} from 'vuex'
 

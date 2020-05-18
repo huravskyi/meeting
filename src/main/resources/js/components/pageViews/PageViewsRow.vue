@@ -55,8 +55,8 @@
 </template>
 
 <script>
-    const accountPreview = require('../../image/accountPreview.png')
-    const accountPreviewMin = require('../../image/accountPreview-min.png')
+    const accountPreview = ('https://firebasestorage.googleapis.com/v0/b/meeting-app-af0af.appspot.com/o/accountPreview.png?alt=media&token=8c1044c0-b371-4bf2-91e6-e0e7daf87c87')
+    const accountPreviewMin = ('https://firebasestorage.googleapis.com/v0/b/meeting-app-af0af.appspot.com/o/accountPreview-min.png?alt=media&token=209837ce-9ee9-47a7-ab45-7ba39d551f82')
 
     import LazyLoader from "./LazyLoader.vue";
     export default {

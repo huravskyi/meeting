@@ -3,8 +3,8 @@ import about from "../../api/about";
 import userApi from "../../api/user";
 import userLikeApi from "../../api/userLike";
 import userView from "../../api/userView";
-import setLike from "../../helper/setLike";
-import setUsers from "../../helper/setUsers";
+import setLike from "../../util/helper/setLike";
+import setUsers from "../../util/helper/setUsers";
 
 
 export default {
