@@ -48,10 +48,9 @@ repositories {
 	mavenCentral()
 }
 //перед деплоем устанавливам для нодаheroku login
-//node {
-//	download = true
-//}
-processResources.dependsOn(buildFront)
+node {
+	download = true
+}
 dependencies {
 //	compile group: 'org.springframework.session', name: 'spring-session-jdbc'
 	compile "org.flywaydb:flyway-core"
