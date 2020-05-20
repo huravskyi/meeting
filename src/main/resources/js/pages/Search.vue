@@ -56,6 +56,7 @@
     import LazyLoader from "../components/pageViews/LazyLoader.vue";
     import getAge from "../util/helper/getAge";
     import AutocompleteCity from "../components/profile/AutocompleteCity.vue";
+    import getLocaleSearch from "../util/helper/getLocaleSearch";
 
     export default {
         name: "Search",
@@ -90,28 +91,6 @@
             localeSearch() {
                 return localStorage.getItem('locale' + this.userProfile.id)
             },
-            getLocale(name, entries) {
-                let locale
-                _.forEach(entries, country => {
-                    if (country.name === name) {
-                        locale = 'country'
-                        return false
-                    }
-                    _.forEach(country.areas, region => {
-                        if (region.name === name) {
-                            locale = 'region'
-                            return false
-                        }
-                        _.forEach(region.areas, city => {
-                            if (city.name === name) {
-                                locale = 'city'
-                                return false
-                            }
-                        })
-                    })
-                })
-                return locale
-            },
             getUsersSearch(page) {
                 let localeType = null
                 let localeName = null
@@ -121,7 +100,7 @@
                     } else {
                         localeName = this.$refs.formCity.locale.name
                     }
-                    localeType = this.getLocale(localeName, this.$refs.formCity.entries)
+                    localeType = getLocaleSearch(localeName, this.$refs.formCity.entries)
                 }
                 localStorage.setItem('locale' + this.userProfile.id, localeName)
                 if (localeName !== undefined && localeType !== undefined) {

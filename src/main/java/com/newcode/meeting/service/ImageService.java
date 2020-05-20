@@ -49,6 +49,7 @@ public class ImageService {
         String keyPath = "./serviceAccountKey.json";
 
         String imageDataBytes = newImage.getName().substring(newImage.getName().indexOf(",") + 1);
+        System.out.println(imageDataBytes.length());
         byte[] decodedImageByte = Base64.getDecoder().decode(imageDataBytes);
         BufferedImage bufferedImage = getBufferedImage(decodedImageByte);
         ImageIO.write(bufferedImage, "jpg", outPutFile);

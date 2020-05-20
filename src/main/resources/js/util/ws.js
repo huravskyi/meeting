@@ -23,7 +23,6 @@ export function addHandler(handler) {
 }
 
 function frameHandler(frame) {
-    console.log('Connected: ' + frame)
     stompClient.subscribe('/topic/activity'+ userProfile.id, message => {
         handlers.forEach(handler => handler(JSON.parse(message.body)))
     })
@@ -32,7 +31,6 @@ export function disconnect() {
     if (stompClient !== null) {
         stompClient.disconnect()
     }
-    console.log("Disconnected")
 }
 
 // export function sendMessage(message) {

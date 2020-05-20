@@ -127,7 +127,7 @@
             crop() {
                 const {coordinates, canvas} = this.$refs.cropper.getResult()
                 this.coordinates = coordinates
-                this.image = canvas.toDataURL()
+                this.image = canvas.toDataURL('image/jpeg', 0.1)
                 this.accountPreview = this.image
                 this.image = null
                 this.saveImage()
@@ -141,7 +141,6 @@
                         let reader = new FileReader()
                         reader.onload = (e) => {
                             this.image = e.target.result
-
                         }
                         reader.readAsDataURL(input.files[0])
                     }
