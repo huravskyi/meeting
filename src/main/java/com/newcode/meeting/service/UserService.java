@@ -33,8 +33,8 @@ public class UserService implements UserDetailsService {
 
     @Autowired
     private MailSender mailSender;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+
+    private  final PasswordEncoder passwordEncoder;
 
     private final UserViewRepo userViewRepo;
 
@@ -42,7 +42,8 @@ public class UserService implements UserDetailsService {
     private final ImageService imageService;
 
 
-    public UserService(UserViewRepo userViewRepo, UserRepo userRepo, ImageService imageService) {
+    public UserService(PasswordEncoder passwordEncoder, UserViewRepo userViewRepo, UserRepo userRepo, ImageService imageService) {
+        this.passwordEncoder = passwordEncoder;
         this.userViewRepo = userViewRepo;
         this.userRepo = userRepo;
         this.imageService = imageService;
@@ -91,6 +92,7 @@ public class UserService implements UserDetailsService {
         user.setActive(false);
         user.setRoles(Collections.singleton(Role.USER));
         user.setActivationCode(UUID.randomUUID().toString());
+
         user.setPassword(passwordEncoder.encode(password));
 
         try {
@@ -211,7 +213,7 @@ public class UserService implements UserDetailsService {
     private User changePassword(User newUser, User userFromDb) {
         String passwordOld = newUser.getPassword();
         String passwordOldFromDb = userFromDb.getPassword();
-        if (!passwordEncoder.matches(passwordOld, passwordOldFromDb)) {
+        if (passwordEncoder.matches(passwordOld, passwordOldFromDb)) {
             return new User(null);
         }
         String passwordNew = passwordEncoder.encode(newUser.getNewPassword());

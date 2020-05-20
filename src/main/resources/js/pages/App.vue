@@ -35,7 +35,7 @@
     import Navigation from "./Navigation.vue";
     import MobileNavigation from "./MobileNavigation.vue";
     import Footer from "../footer/Footer.vue";
-    import {addHandler, checkConnect, connect, disconnect} from "../util/ws";
+    import {addHandler} from "../util/ws";
 
     import {mapMutations, mapState, mapActions} from 'vuex'
 
