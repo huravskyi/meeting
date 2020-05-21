@@ -213,7 +213,7 @@ public class UserService implements UserDetailsService {
     private User changePassword(User newUser, User userFromDb) {
         String passwordOld = newUser.getPassword();
         String passwordOldFromDb = userFromDb.getPassword();
-        if (passwordEncoder.matches(passwordOld, passwordOldFromDb)) {
+        if (!passwordEncoder.matches(passwordOld, passwordOldFromDb)) {
             return new User(null);
         }
         String passwordNew = passwordEncoder.encode(newUser.getNewPassword());
@@ -260,7 +260,6 @@ public class UserService implements UserDetailsService {
                 page = userRepo.findUsersByBirthDateIsBetweenAndGenderDto(pageable, maxDate, minDate, sex);
                 break;
         }
-
 //        Page<UserDto> page = userRepo.findUsersByBirthDateIsBetweenAndGenderDto(pageable, maxDate, minDate, sex, user);
         List<UserPojo> usersDto = new ArrayList<>();
 
@@ -326,7 +325,6 @@ public class UserService implements UserDetailsService {
         user.setNewPassword(null);
         user.setNewEmail(null);
 
-
         user.setActivationCode(null);
 
         user.getChatsDeleted().clear();
@@ -339,17 +337,14 @@ public class UserService implements UserDetailsService {
         detail.setPersonalInformation(null);
         detail.setTarget(null);
 
-
         if (user.getUsersViews() != null) {
             userViewRepo.deleteAllByOwner(user);
         }
-
         Set<Image> images = new HashSet<>();
         if (user.getImages() != null) {
             images = user.getImages();
             user.getImages().removeAll(images);
         }
-
         userRepo.save(user);
         for (Image image : images) {
             try {
