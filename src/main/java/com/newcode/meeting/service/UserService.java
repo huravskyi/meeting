@@ -11,6 +11,7 @@ import com.newcode.meeting.repo.UserRepo;
 import com.newcode.meeting.repo.UserViewRepo;
 import com.newcode.meeting.util.RandomHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.mail.MailException;
@@ -29,7 +30,8 @@ import java.util.*;
 
 @Service
 public class UserService implements UserDetailsService {
-
+    @Value("${host}")
+    private String host;
 
     @Autowired
     private MailSender mailSender;
@@ -120,13 +122,13 @@ public class UserService implements UserDetailsService {
                 mess = "Привет, %s! \n" +
                         "Добро пожаловать на сайт Dating World.\n  " +
                         "Пожайлуста перейдите по ссылке чтобы подтвердить профиль :  \n" +
-                        " http://localhost:8081/activate/" + action + "/%s";
+                        host+"/activate/" + action + "/%s";
                 break;
             case "registrationNewEmail":
                 email = user.getNewEmail();
                 mess = " Dating World  Привет, %s! \n" +
                         "Чтобы обновить почту перейдите по ссылке:  \n" +
-                        " http://localhost:8081/activate/" + action + "/%s";
+                        host+"/activate/" + action + "/%s";
                 break;
         }
         if (!StringUtils.isEmpty(user.getEmail())) {
