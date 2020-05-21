@@ -192,12 +192,12 @@ public class UserService implements UserDetailsService {
         if (newUser.getEmail() != null) {
             userFromDb = changeEmail(newUser, userFromDb);
         } else {
-            userFromDb = changePassword(newUser, userFromDb);
+            newUser = changePassword(newUser, userFromDb);
         }
         if (userFromDb.getId() == null)
             return userFromDb;
         userRepo.save(userFromDb);
-        return userFromDb;
+        return newUser;
     }
 
     private User changeEmail(User newUser, User userFromDb) {
@@ -218,7 +218,7 @@ public class UserService implements UserDetailsService {
         }
         String passwordNew = passwordEncoder.encode(newUser.getNewPassword());
         userFromDb.setPassword(passwordNew);
-        return userFromDb;
+        return newUser;
     }
 
     public boolean isActivationEmail(String code) {

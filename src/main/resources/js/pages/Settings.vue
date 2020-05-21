@@ -249,7 +249,6 @@
                         result => {
                             if (result) {
                                 alert("Новый пароль успешно сохранен")
-                                this.show = false
                             }else{
                                 alert("Ошибка старый пароль не совпадает")
                             }
@@ -258,6 +257,7 @@
                             alert("Rejected: " + error)
                         }
                     )
+                    this.show = false
                 }
             },
             editingEmail() {
