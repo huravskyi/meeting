@@ -30,8 +30,8 @@ import java.util.*;
 
 @Service
 public class UserService implements UserDetailsService {
-    @Value("${host}")
-    private String host;
+    @Value("${domain}")
+    private String domain;
 
     @Autowired
     private MailSender mailSender;
@@ -122,13 +122,13 @@ public class UserService implements UserDetailsService {
                 mess = "Привет, %s! \n" +
                         "Добро пожаловать на сайт Dating World.\n  " +
                         "Пожайлуста перейдите по ссылке чтобы подтвердить профиль :  \n" +
-                        host+"/activate/" + action + "/%s";
+                        domain +"/activate/" + action + "/%s";
                 break;
             case "registrationNewEmail":
                 email = user.getNewEmail();
                 mess = " Dating World  Привет, %s! \n" +
                         "Чтобы обновить почту перейдите по ссылке:  \n" +
-                        host+"/activate/" + action + "/%s";
+                        domain +"/activate/" + action + "/%s";
                 break;
         }
         if (!StringUtils.isEmpty(user.getEmail())) {
