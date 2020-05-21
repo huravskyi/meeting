@@ -10,6 +10,7 @@
 
                 <div >
                     <v-btn absolute
+                           style="z-index: 1000"
                            icon
                            right
                            top
@@ -20,10 +21,11 @@
                     </v-btn>
                     <v-img :lazy-src="image.urlLink"
                            :src="image.urlLink"
-                           :max-height="!isMobile? '500': ''"
+                           :max-height="!isMobile? '500': getSize"
                            :min-height="!isMobile? '500': '310'"
-                           :max-width="!isMobile? '500': ''"
+                           :max-width="!isMobile? '500': getSize"
                            :min-width="!isMobile? '500': '310'"
+                           class="image_slade"
                     ></v-img>
                 </div>
 
@@ -36,9 +38,13 @@
     export default {
         props: ['image', 'isMobile', ],
         name: "CarouselCard",
+        computed:{
+            getSize(){
+                return  ''+window.innerWidth
+            }
+        }
     }
 </script>
 
 <style scoped>
-
 </style>

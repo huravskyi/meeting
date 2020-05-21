@@ -125,18 +125,24 @@
             ...mapActions(['addImageAction']),
 
             crop() {
-                const {coordinates, canvas} = this.$refs.cropper.getResult()
-                this.coordinates = coordinates
-                this.image = canvas.toDataURL('image/jpeg', 0.1)
-                this.accountPreview = this.image
-                this.image = null
-                this.saveImage()
+                this.overlay = true
+                if (this.overlay) {
+                    const {coordinates, canvas} = this.$refs.cropper.getResult()
+                    this.coordinates = coordinates
+                    this.image = canvas.toDataURL('image/jpeg', 0.1)
+                    this.accountPreview = this.image
+                    this.image = null
+                    this.saveImage()
+                }
             },
             uploadImage(event) {
                 let input = event.target;
                 if (input.files && input.files[0]) {
+                    console.log(input.files[0].size)
                     if (input.files[0].size < 2000) {
-                        return this.setAlert()
+                        return this.setAlert(true)
+                    }else if(input.files[0].size > 5500000){
+                        return this.setAlert(false)
                     } else {
                         let reader = new FileReader()
                         reader.onload = (e) => {
@@ -148,7 +154,7 @@
             },
             getMainImage() {
                 if (!this.myProfile) {
-                    const image  = this.profileUserGuest.userpic
+                    const image = this.profileUserGuest.userpic
                     if (image !== null) {
                         return image
                     } else {
@@ -168,7 +174,6 @@
                     name: this.accountPreview
                 }
                 let answer = this.addImageAction(image)
-                this.overlay = true
                 answer.then(
                     result => {
 
@@ -190,9 +195,9 @@
                 this.snackbar = true
                 this.text = 'Вы не можете загрузить больше пяти фотографий'
             },
-            setAlert() {
+            setAlert(event) {
                 this.snackbar = true
-                this.text = 'Фотография должна быть больше 2kb'
+                event?this.text = 'Фотография должна быть больше 2KB':this.text = 'Фотография не должна быть больше 5MB'
             }
         }
     }

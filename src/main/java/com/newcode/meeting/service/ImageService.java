@@ -40,22 +40,26 @@ public class ImageService {
         if (images.size() > 4) {
             return new Image(null);
         }
-
-        File outPutFile = new File("image.jpg");
-        InputStream testFile = new FileInputStream("./image.jpg");
+        File outPutFile = null;
+        try {
+            outPutFile = new File("image.jpg");
+            outPutFile.createNewFile();
+        } catch (Exception e) {
+            e.fillInStackTrace();
+        }
+        InputStream inputFile = new FileInputStream("./image.jpg");
         String name = RandomHelper.generatePassword(6);
         String blobName = user.getId() + "/" + name + ".jpg";
         String bucketName = "meeting-app-af0af.appspot.com";
         String keyPath = "./serviceAccountKey.json";
 
         String imageDataBytes = newImage.getName().substring(newImage.getName().indexOf(",") + 1);
-        System.out.println(imageDataBytes.length());
         byte[] decodedImageByte = Base64.getDecoder().decode(imageDataBytes);
         BufferedImage bufferedImage = getBufferedImage(decodedImageByte);
         ImageIO.write(bufferedImage, "jpg", outPutFile);
 
         Blob blob = fireBase.getBucket().create(
-                blobName, testFile, "image/jpg",
+                blobName, inputFile, "image/jpg",
                 Bucket.BlobWriteOption.userProject("meeting-app-af0af")
         );
         URL signedUrl = blob.getStorage().signUrl(BlobInfo.newBuilder(bucketName, blobName).build(),
@@ -71,7 +75,7 @@ public class ImageService {
         }
         userRepo.save(user);
         imageRepo.save(image);
-
+        outPutFile.delete();
         return image;
     }
 
@@ -96,14 +100,14 @@ public class ImageService {
 
         boolean delete = fireBase.getBucket().getStorage().delete(
                 bucketName, blobName, Storage.BlobSourceOption.userProject("meeting-app-af0af"));
-        if (!delete){
+        if (!delete) {
             imageRepo.save(image);
         }
     }
 
     public Image editImageMainAndHide(Image imageFromDb, Image image, User userPrincipal) {
 
-        if (image.isMain()){
+        if (image.isMain()) {
             userPrincipal.setUserpic(imageFromDb.getUrlLink());
             userRepo.save(userPrincipal);
 
@@ -116,7 +120,7 @@ public class ImageService {
             images.add(imageOldMain);
             imageRepo.saveAll(images);
 
-        }else {
+        } else {
             imageFromDb.setHide(image.isHide());
             imageRepo.save(imageFromDb);
         }
