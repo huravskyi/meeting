@@ -1,4 +1,4 @@
- create table chat (id bigint not null, creation_date datetime, last_message varchar(255), updated_date datetime, primary key (id)) engine=MyISAM;
+ create table chat (id bigint not null, creation_date datetime, last_message longblob, updated_date datetime, primary key (id)) engine=MyISAM;
  create table chat_members (chats_id bigint not null, members_id bigint not null) engine=MyISAM;
  create table hibernate_sequence (next_val bigint) engine=MyISAM;
  insert into hibernate_sequence values ( 1 );

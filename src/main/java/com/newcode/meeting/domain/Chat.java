@@ -34,7 +34,8 @@ public class Chat {
     private LocalDateTime updatedDate;
     @JsonView(Views.FullProfile.class)
     private LocalDateTime creationDate;
-
+    @Lob
+    @Column(columnDefinition="LONGBLOB")
     @JsonView(Views.Id.class)
     private String lastMessage;
 
