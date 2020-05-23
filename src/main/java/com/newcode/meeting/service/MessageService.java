@@ -64,19 +64,24 @@ public class MessageService {
         setNewMessage(message, author);
 
         Message newMessage = messageRepo.save(message);
-        newMessage.setChat(new Chat(chat.getId()));
+        if (newMessage.getContent().getContent() == null || newMessage.getContent().getContent().equals("")){
+            messageRepo.delete(newMessage);
+            return null;
+        }else {
+            newMessage.setChat(new Chat(chat.getId()));
 
-        List<Chat> chats = userTo.getChatsDeleted();
-        if (chats.contains(chat)) {
-            chats.remove(chat);
-            userRepo.save(userTo);
-            ChatDto chatDto = chatRepo.findChatDto(chat, author);
-            chatDto.setMessages(Collections.singletonList(newMessage));
-            ws.wsSender(chatDto, userTo, ObjectType.CHATDTO, EventType.CREATE);
-        } else {
-            ws.wsSender(newMessage, userTo, ObjectType.MESSAGE, EventType.CREATE);
+            List<Chat> chats = userTo.getChatsDeleted();
+            if (chats.contains(chat)) {
+                chats.remove(chat);
+                userRepo.save(userTo);
+                ChatDto chatDto = chatRepo.findChatDto(chat, author);
+                chatDto.setMessages(Collections.singletonList(newMessage));
+                ws.wsSender(chatDto, userTo, ObjectType.CHATDTO, EventType.CREATE);
+            } else {
+                ws.wsSender(newMessage, userTo, ObjectType.MESSAGE, EventType.CREATE);
+            }
+            return newMessage;
         }
-        return newMessage;
     }
 
     static void setNewMessage(Message message, User author) throws IOException {
@@ -142,7 +147,8 @@ public class MessageService {
         messageRepo.updateMessageViewedAndViewedPageForIds(ids);
         return getMessagePageDto(chat, pageable);
     }
-    public MessagePageDto getOldMessageListForChat(Chat chat, Pageable pageable){
+
+    public MessagePageDto getOldMessageListForChat(Chat chat, Pageable pageable) {
         return getMessagePageDto(chat, pageable);
     }
 
