@@ -26,10 +26,6 @@ public class FireBaseConfig {
                 .build();
         FirebaseApp.initializeApp(options);
         this.bucket = StorageClient.getInstance().bucket("meeting-app-af0af.appspot.com");
-        String bucketName = "meeting-app-af0af.appspot.com";
-        String blobName = "1/LqfPYx.jpg";
-
-        bucket.getStorage().delete(bucketName, blobName, Storage.BlobSourceOption.userProject("meeting-app-af0af"));
     }
 
 

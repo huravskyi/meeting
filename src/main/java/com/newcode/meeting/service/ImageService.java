@@ -3,7 +3,6 @@ package com.newcode.meeting.service;
 import com.google.auth.oauth2.ServiceAccountCredentials;
 import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.BlobInfo;
-import com.google.cloud.storage.Bucket;
 import com.google.cloud.storage.Storage;
 import com.newcode.meeting.config.FireBaseConfig;
 import com.newcode.meeting.domain.Image;
@@ -12,10 +11,6 @@ import com.newcode.meeting.repo.ImageRepo;
 import com.newcode.meeting.repo.UserRepo;
 import com.newcode.meeting.util.RandomHelper;
 import org.springframework.stereotype.Service;
-
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URL;
 import java.util.*;
@@ -33,31 +28,15 @@ public class ImageService {
         this.imageRepo = imageRepo;
         this.userRepo = userRepo;
     }
-
-//    private Image nextWorkImage(Image newImage, File outPutFile, User user) throws IOException {
-//        String imageDataBytes = newImage.getName().substring(newImage.getName().indexOf(",") + 1);
-//        byte[] decodedImageByte = Base64.getDecoder().decode(imageDataBytes);
-//        BufferedImage bufferedImage = getBufferedImage(decodedImageByte);
-//        boolean setNewImage = ImageIO.write(bufferedImage, "jpg", outPutFile);
-//
-//        if (setNewImage) {
-//            return writeToFireBase(user);
-//        }
-//        return null;
-//    }
-
     private Image writeToFireBase(User user, Image newImage, Set<Image> images) throws IOException {
         String imageDataBytes = newImage.getName().substring(newImage.getName().indexOf(",") + 1);
         byte[] decodedImageByte = Base64.getDecoder().decode(imageDataBytes);
-        BufferedImage bufferedImage = getBufferedImage(decodedImageByte);
-//        boolean setNewImage = ImageIO.write(bufferedImage, "jpg", outPutFile);
-//        InputStream inputFile = new FileInputStream("./image.jpg");
+
         String name = RandomHelper.generatePassword(6);
         String blobName = user.getId() + "/" + name + ".jpg";
         String bucketName = "meeting-app-af0af.appspot.com";
         String keyPath = "./serviceAccountKey.json";
         String kmsKeyName = "projects/key-project/locations/us-east1/keyRings/key-ring/cryptoKeys/gs://meeting-app-af0af.appspot.com";
-//        Blob blob = fireBase.getBucket().create(blobName, inputFile, "image/jpg", Bucket.BlobWriteOption.userProject("meeting-app-af0af")
         Blob blob = fireBase.getBucket().create(
                 blobName,
                 decodedImageByte,
@@ -93,30 +72,7 @@ public class ImageService {
             userRepo.save(user);
             imageRepo.save(image);
         }
-//        File outPutFile = null;
-//        try {
-//            outPutFile = new File("image.jpg");
-//            if (outPutFile.createNewFile()) {
-//
-//                outPutFile.delete();
-//                return image;
-//            }
-//        } catch (Exception e) {
-//            e.fillInStackTrace();
-//        }
         return image;
-    }
-
-
-    private BufferedImage getBufferedImage(byte[] decodedImageByte) throws IOException {
-        BufferedImage bufferedImage = ImageIO.read(new ByteArrayInputStream(decodedImageByte));
-        BufferedImage newBufferedImage = new BufferedImage(
-                bufferedImage.getWidth(),
-                bufferedImage.getHeight(),
-                BufferedImage.TYPE_INT_RGB
-        );
-        newBufferedImage.createGraphics().drawImage(bufferedImage, 0, 0, Color.WHITE, null);
-        return newBufferedImage;
     }
 
     public void remove(Image image, User user) {
