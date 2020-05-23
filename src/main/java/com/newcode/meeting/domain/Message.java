@@ -26,9 +26,10 @@ public class Message  implements Serializable {
     private Boolean viewedPage;
     @JsonView(Views.IdMessage.class)
     private Boolean delivered;
+    @Lob
+    @Column(columnDefinition="LONGBLOB")
     @JsonView(Views.IdMessage.class)
-    @OneToOne(mappedBy = "message", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Content content;
+    private Content content = new Content();
     @JsonView(Views.IdMessage.class)
     @Column(updatable = false)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")

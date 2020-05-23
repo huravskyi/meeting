@@ -49,7 +49,6 @@ public class MessageService {
         Chat chat = chatRepo.findChatById(message.getChat().getId());
         author = userRepo.findUserById(author.getId());
         User userTo = getUserTo(chat.getMembers(), author);
-
         if (userTo.getUsersBlock().contains(author)) {
             return new Message(0L);
         }
@@ -86,7 +85,7 @@ public class MessageService {
         message.setViewed(false);
         message.setViewedPage(false);
         message.setCreationDate(LocalDateTime.now());
-        message.getContent().setMessage(message);
+//        message.getContent().setMessage(message);
         Meta.fillMeta(message.getContent());
     }
 

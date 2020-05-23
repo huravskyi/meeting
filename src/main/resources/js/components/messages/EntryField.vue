@@ -8,7 +8,6 @@
                         id="chatMessTextarea"
                         contenteditable="true"
                         class="align-center justify-center chat-write__text"
-                        @click="fff()"
                 >
                 </div>
                 <div class="chat-write__btn chat-write__btn--text">
@@ -55,9 +54,6 @@
             onPaste(e) {
                 showSmile(e, chatMessTextarea, 'past', true)
             },
-            fff() {
-                console.log(window.innerHeight)
-            }
         }
     }
 </script>

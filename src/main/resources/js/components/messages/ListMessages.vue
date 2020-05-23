@@ -163,6 +163,7 @@
         mounted() {
             this.element = document.getElementById("scrollElement")
             this.element.addEventListener('scroll', this.windowListener)
+            setTimeout(this.windowListener, 1000)
         },
         destroyed() {
             window.removeEventListener('scroll', this.windowListener);
@@ -195,7 +196,6 @@
         },
         created() {
             this.deferredCall = _.debounce(this.setMessageViewed, 2500)
-
         },
         methods: {
             ...mapActions(['setViewedAction', 'getMessageFromDbAction', 'downloadNewMessageFromDbAction']),
@@ -253,8 +253,8 @@
                 this.setViewedAction(chat)
             },
             windowListener() {
-                let it = this.getIdElement()
-                let element = document.getElementById(it)
+                let item = this.getIdElement()
+                let element = document.getElementById(item)
                 this.lazyLoader()
                 if (element !== null) {
                     this.Visible(element)
