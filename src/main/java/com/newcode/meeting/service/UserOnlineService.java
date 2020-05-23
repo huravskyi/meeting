@@ -15,8 +15,10 @@ public class UserOnlineService {
 
     public void setUserOnline(Long userId, boolean connect) {
         User user = userRepo.findUserById(userId);
-        user.setOnline(connect);
-        userRepo.save(user);
+        if(user != null) {
+            user.setOnline(connect);
+            userRepo.save(user);
+        }
     }
 
 }

@@ -149,7 +149,7 @@ public class UserService implements UserDetailsService {
                     user.getUsername(),
                     password
             );
-            mailSender.send(user.getEmail(), "Новый пвроль ", message);
+            mailSender.send(user.getEmail(), "Новый пароль ", message);
         }
     }
 

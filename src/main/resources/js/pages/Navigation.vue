@@ -4,7 +4,9 @@
                    :height="!userProfile? defineExtended : ''"
         >
             <v-layout align-center justify-space-around row fill-height>
-                <v-toolbar-title class="font-weight-bold font-italic">Dating World&ensp;</v-toolbar-title>
+                <v-toolbar-title class="font-weight-bold font-italic">
+                    <router-link to="/" title="На главную" style="text-decoration: none">Dating World&ensp;</router-link>
+                </v-toolbar-title>
 
                 <div class="text-center" v-model="tooltip">
                     <v-snackbar
@@ -24,7 +26,6 @@
                                :key="tab.id"
                                :to="tab.to"
                         >
-
                             <div v-if="!tab.delivered && !tab.like">{{tab.name}}</div>
                             <div v-if="tab.delivered">
                                 <v-badge v-if="getDeliveredMessages()"

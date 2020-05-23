@@ -2,7 +2,6 @@
     <div>
         <v-card class="d-flex justify-space-between align-center "
                 flat
-
         >
             <div class="d-flex align-center">
                 <v-btn icon height="60" @click="$emit('set-selected', undefined)">
@@ -10,46 +9,31 @@
                 </v-btn>
                 <div class="pl-1 d-flex align-center" >
                     <div>
-                        <v-avatar v-if="user.userpic">
+                        <v-avatar>
                             <v-img max-height="30"
                                    max-width="30"
-                                   :src="user.userpic"/>
-                        </v-avatar>
-                        <v-avatar v-else>
-                            <v-img height="30"
-                                   width="30"
-                                   :src="accountPreview"
-                                   class="radio border_radius"
-                                   style="border: #0a70ff solid 1px"/>
+                                   :lazy-src="accountPreviewMin"
+                                   :src="user.userpic? user.userpic: accountPreview"/>
                         </v-avatar>
                     </div>
                     <div style="color: blue">
                         {{user.username +', '}} {{getAge(user.birthDate)}}
                     </div>
-
                 </div>
             </div>
-
-
         </v-card>
         <v-divider></v-divider>
         <v-divider></v-divider>
-
     </div>
 </template>
 <script>
-    const accountPreview = ('https://firebasestorage.googleapis.com/v0/b/meeting-app-af0af.appspot.com/o/accountPreview.png?alt=media&token=8c1044c0-b371-4bf2-91e6-e0e7daf87c87')
-
-    import ButtonMenuMessage from "./ButtonMenuMessage.vue";
     import getMyAge from "../../util/helper/getAge";
 
     export default {
-        props: ['tab', 'selected', 'chats', 'chatsBlock', 'userProfile'],
+        props: ['tab', 'selected', 'chats', 'chatsBlock', 'userProfile', 'accountPreview', 'accountPreviewMin'],
         name: "MenuMessageList",
-        components: {ButtonMenuMessage},
         data: () => ({
             user: '',
-            accountPreview,
         }),
         mounted() {
             this.user = this.getUser()

@@ -123,13 +123,12 @@
         },
         methods: {
             ...mapActions(['addImageAction']),
-
             crop() {
                 this.overlay = true
                 if (this.overlay) {
                     const {coordinates, canvas} = this.$refs.cropper.getResult()
                     this.coordinates = coordinates
-                    this.image = canvas.toDataURL('image/jpeg', 0.1)
+                    this.image = canvas.toDataURL('image/jpeg', 0.6)
                     this.accountPreview = this.image
                     this.image = null
                     this.saveImage()
@@ -138,7 +137,6 @@
             uploadImage(event) {
                 let input = event.target;
                 if (input.files && input.files[0]) {
-                    console.log(input.files[0].size)
                     if (input.files[0].size < 2000) {
                         return this.setAlert(true)
                     }else if(input.files[0].size > 5500000){
@@ -236,6 +234,7 @@
         background: #3fb37f;
         cursor: pointer;
         transition: background 0.5s;
+        width: -webkit-fill-available;
     }
 
     .button:hover {

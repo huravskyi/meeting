@@ -7,8 +7,8 @@
                         data-placeholder-text="Введите сообщение"
                         id="chatMessTextarea"
                         contenteditable="true"
-                        style="background-color: white; justify-content: start!important;"
                         class="align-center justify-center chat-write__text"
+                        @click="fff()"
                 >
                 </div>
                 <div class="chat-write__btn chat-write__btn--text">
@@ -42,19 +42,22 @@
     export default {
         components: {ChooseSmile},
         props: ['sendMessage', 'displayColBlock', 'sm', 'md', 'classCol', 'cols'],
-        name: "PastSmileAndSendMessage",
+        name: "EntryField",
 
         mounted() {
             chatMessTextarea.addEventListener('paste', this.onPaste);
         },
         methods: {
-            sendMessageAndSmile(){
-                if(this.sendMessage(showSmile(null, chatMessTextarea, 'send', false)))
+            sendMessageAndSmile() {
+                if (this.sendMessage(showSmile(null, chatMessTextarea, 'send', false)))
                     chatMessTextarea.innerHTML = ''
             },
             onPaste(e) {
-              showSmile(e, chatMessTextarea, 'past', true)
+                showSmile(e, chatMessTextarea, 'past', true)
             },
+            fff() {
+                console.log(window.innerHeight)
+            }
         }
     }
 </script>
@@ -79,7 +82,6 @@
     }
 
     .chat-write__text {
-
         overflow: auto;
         min-height: 50px;
         max-height: 66px;
@@ -100,6 +102,7 @@
         font-family: 'Open Sans', sans-serif;;
         font-weight: 400;
         font-size: larger;
+        justify-content: start !important;
     }
 
     .chat-write__text:empty:before {

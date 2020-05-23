@@ -3,11 +3,11 @@
         <v-row class="flex-nowrap">
 
             <v-container id="scrollElement"
-                         style="min-height: 200px;  "
+                         style="min-height: 50px;  "
                          class="overflow-y-auto ma-0"
             >
                 <v-row v-scroll
-                       style="height: 350px"
+                       :style="'height:'+heightForScroll+'px'"
                        id="scroll_container"
                 >
                     <v-col class="flex-nowrap">
@@ -135,7 +135,7 @@
     const load = ("https://firebasestorage.googleapis.com/v0/b/meeting-app-af0af.appspot.com/o/load.gif?alt=media&token=8923efec-c9c1-4234-9ea7-ed1235077fa8")
     export default {
         components: {SmileMessage},
-        props: ['selected', 'chats', 'userProfile', 'tab', 'isLoading', 'chatBlock', 'isMobile'],
+        props: ['selected', 'chats', 'userProfile', 'tab', 'isLoading', 'chatBlock', 'isMobile', 'heightForScroll'],
         name: "ListMessages",
         data: () => ({
             scrollRow: 200,
@@ -163,9 +163,6 @@
         mounted() {
             this.element = document.getElementById("scrollElement")
             this.element.addEventListener('scroll', this.windowListener)
-
-            if (this.isMobile) this.setHeight()
-
         },
         destroyed() {
             window.removeEventListener('scroll', this.windowListener);
@@ -203,16 +200,6 @@
         methods: {
             ...mapActions(['setViewedAction', 'getMessageFromDbAction', 'downloadNewMessageFromDbAction']),
             ...mapMutations(['setViewedMutation', 'setBlockMutation']),
-
-            setHeight() {
-                let heightScroll = document.getElementById('scroll_container')
-                let height = document.querySelector('body')
-                if (height !== null && heightScroll !== null) {
-                    height = height.clientHeight
-                    height = height< 620? height -350: height -335
-                    heightScroll.style.height = height + 'px'
-                }
-            },
             getMessages(chat) {
                 if (this.chats[this.selected].id !== undefined) {
                     chat.currentPage = 0

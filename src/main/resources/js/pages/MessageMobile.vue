@@ -69,11 +69,12 @@
                         :chats="chats"
                         :tab="tab"
                         :chatsBlock="chatsBlock"
+                        :accountPreview="accountPreview"
+                        :accountPreviewMin="accountPreviewMin"
                 >
                 </list-users>
             </v-list-item-group>
         </v-list>
-
     </div>
 </template>
 
@@ -82,12 +83,11 @@
 
     export default {
         components: {ListUsers},
-        props: ['chats', 'userProfile', 'tab', 'chatsBlock', 'tabTitle', 'isMobile'],
+        props: ['chats', 'userProfile', 'tab', 'chatsBlock', 'tabTitle', 'isMobile', 'accountPreviewMin', 'accountPreview'],
         name: "MessageMobile",
         data: () => ({
             selectedGroup: undefined,
             name: '',
-            tabb: null,
             displayMenuNameAction: 'flex',
             displayBackspace: 'none',
             menuIconAction: '',

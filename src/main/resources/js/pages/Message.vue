@@ -2,15 +2,18 @@
     <div>
         <div v-if="isMobile">
             <v-container class="pt-0">
-                <message-mobile v-if="selected === undefined"
-                                :chats="chats"
-                                :userProfile="userProfile"
-                                :chatsBlock="chatsBlock"
-                                :tabTitle="tabTitle"
-                                :isMobile="isMobile"
-                                v-on:set-tab="tab = $event"
-                                v-on:set-selected="selected = $event"
-                                :tab="tab"
+                <message-mobile
+                        v-if="selected === undefined"
+                        :chats="chats"
+                        :userProfile="userProfile"
+                        :chatsBlock="chatsBlock"
+                        :tabTitle="tabTitle"
+                        :isMobile="isMobile"
+                        v-on:set-tab="tab = $event"
+                        v-on:set-selected="selected = $event"
+                        :tab="tab"
+                        :accountPreview="accountPreview"
+                        :accountPreviewMin="accountPreviewMin"
                 >
                 </message-mobile>
                 <div v-else>
@@ -21,6 +24,8 @@
                             :selected="selected"
                             :chats="chats"
                             :chatsBlock="chatsBlock"
+                            :accountPreview="accountPreview"
+                            :accountPreviewMin="accountPreviewMin"
                     >
                     </menu-message-list>
                     <div>
@@ -35,8 +40,7 @@
                     </div>
 
                     <div v-if="tab !== 1" class="flex-grow-1 flex-shrink-1 flex-nowrap">
-                        <div class="d-flex justify-center ma-1" v-if="selected !== undefined ">
-
+                        <div v-if="selected !== undefined" class="d-flex justify-center ma-1">
                             <v-tooltip bottom v-if="checkTotalPage()">
                                 <template v-slot:activator="{ on }">
                                     <v-btn icon
@@ -47,8 +51,8 @@
                                 </template>
                                 <span>Загрузить больше сообщений</span>
                             </v-tooltip>
-
                         </div>
+
                         <list-messages v-if="selected !== undefined"
                                        :chatBlock="chatsBlock"
                                        :chats="chats"
@@ -57,19 +61,18 @@
                                        :tab="tab"
                                        :isLoading="isLoading"
                                        :isMobile="isMobile"
+                                       :heightForScroll="heightForScroll"
                         ></list-messages>
                     </div>
-                    <past-smile-and-send-message :displayColBlock="'none'"
-                                                 :cols="'2'"
-                                                 :class-col="'pa-0'"
-                                                 :sendMessage="sendMessage"
-                    ></past-smile-and-send-message>
+                    <entry-field :displayColBlock="'none'"
+                                 :cols="'2'"
+                                 :class-col="'pa-0'"
+                                 :sendMessage="sendMessage"
+                    ></entry-field>
 
                 </div>
             </v-container>
         </div>
-
-
         <v-container v-else>
             <v-col>
                 <v-row>
@@ -118,10 +121,11 @@
                                             ></v-text-field>
                                         </v-col>
                                         <v-container
-                                                style="min-height: 280px; "
+                                                style="min-height: 50px; "
                                                 class="overflow-y-auto ma-0"
                                         >
-                                            <v-row style="height: 330px; width: 290px"
+                                            <v-row class="list-users"
+                                                   :style="'height:'+heightForScroll+'px'"
                                             >
                                                 <v-list three-line>
                                                     <v-list-item-group
@@ -133,9 +137,10 @@
                                                                     :tab="tab"
                                                                     :userName="userName"
                                                                     :chatsBlock="chatsBlock"
+                                                                    :accountPreview="accountPreview"
+                                                                    :accountPreviewMin="accountPreviewMin"
                                                                     style="width:280px">
                                                         </list-users>
-
                                                     </v-list-item-group>
                                                 </v-list>
                                             </v-row>
@@ -167,6 +172,7 @@
                                                :tab="tab"
                                                :isLoading="isLoading"
                                                :isMobile="isMobile"
+                                               :heightForScroll="heightForScroll"
                                 ></list-messages>
 
                             </div>
@@ -174,12 +180,12 @@
                         <v-divider></v-divider>
                         <v-divider></v-divider>
 
-                        <past-smile-and-send-message v-if="selected !== undefined && tab === 0"
-                                                     :sendMessage="sendMessage"
-                                                     :sm="'2'"
-                                                     :md="'1'"
+                        <entry-field v-if="selected !== undefined && tab === 0"
+                                     :sendMessage="sendMessage"
+                                     :sm="'2'"
+                                     :md="'1'"
                         >
-                        </past-smile-and-send-message>
+                        </entry-field>
 
                         <v-divider></v-divider>
                     </v-card>
@@ -197,17 +203,18 @@
     import ButtonMenuMessage from "../components/messages/ButtonMenuMessage.vue";
     import MessageMobile from "./MessageMobile.vue";
     import MenuMessageList from "../components/messages/MenuMessageList.vue";
-    import PastSmileAndSendMessage from "../components/messages/PastSmileAndSendMessage.vue";
+    import EntryField from "../components/messages/EntryField.vue";
 
     export default {
         name: "Message",
         components: {
-            PastSmileAndSendMessage, MenuMessageList,
+            EntryField, MenuMessageList,
             MessageMobile, ButtonMenuMessage,
             ListMessages, ListUsers
         },
         data() {
             return {
+                heightForScroll: '100px',
                 userName: null,
                 isMobile: false,
                 selected: undefined,
@@ -231,6 +238,8 @@
         computed: {
             ...mapState({
                 userProfile: state => state.storeUserProfile.userProfile,
+                accountPreview: state => state.storeUserProfile.accountPreview,
+                accountPreviewMin: state => state.storeUserProfile.accountPreviewMin,
                 chats: state => state.storeMessages.chats,
                 chatsBlock: state => state.storeMessages.chatsBlock,
             }),
@@ -244,12 +253,15 @@
         beforeDestroy() {
             if (typeof window !== 'undefined') {
                 window.removeEventListener('resize', this.onResize, {passive: true})
+                window.removeEventListener('resize', this.reportWindowSize)
             }
         },
         mounted() {
             this.onResize()
             window.addEventListener('resize', this.onResize, {passive: true})
             this.getMessages()
+            window.addEventListener('resize', this.reportWindowSize);
+            this.reportWindowSize()
         },
         methods: {
             ...mapActions(['saveMessageActions',
@@ -257,6 +269,10 @@
                 'downloadOldMessageFromDbAction',
                 'getNewListMessageAction',
             ]),
+            reportWindowSize() {
+                !this.isMobile ?
+                    this.heightForScroll = window.innerHeight - 400 : this.heightForScroll = window.innerHeight - 325
+            },
             onResize() {
                 this.isMobile = window.innerWidth < 766
             },
@@ -334,4 +350,7 @@
 </script>
 
 <style scoped>
+    .list-users {
+
+    }
 </style>

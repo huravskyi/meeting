@@ -38,6 +38,10 @@ public class ProfileDetailService {
         if (detail.getTarget() != null)
             detailFromDb.setTarget(detail.getTarget());
 
+        if (detailFromDb.getLook() == null) {
+            Look newLook = new Look();
+            detailFromDb.setLook(newLook);
+        }
         Look look = check(detail.getLook(), detailFromDb.getLook());
         detailFromDb.setLook(look);
 
@@ -55,7 +59,7 @@ public class ProfileDetailService {
 
     private Look check(Look look, Look lookFromDb) {
         if (look.getHair() != null)
-            lookFromDb.setHair(look.getHair());
+        lookFromDb.setHair(look.getHair());
         if (look.getHeight() != 0)
             lookFromDb.setHeight(look.getHeight());
         if (look.getWeight() != 0)

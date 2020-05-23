@@ -68,26 +68,18 @@
 
 <script>
     import {mapState} from "vuex";
-
-    const accountPreviewMin = ('https://firebasestorage.googleapis.com/v0/b/meeting-app-af0af.appspot.com/o/accountPreview-min.png?alt=media&token=209837ce-9ee9-47a7-ab45-7ba39d551f82')
     const sms = ("https://firebasestorage.googleapis.com/v0/b/meeting-app-af0af.appspot.com/o/sms1.mp3?alt=media&token=338e5d21-e7ec-4a3b-be41-f2a24378a45d")
-    const accountPreview = ('https://firebasestorage.googleapis.com/v0/b/meeting-app-af0af.appspot.com/o/accountPreview.png?alt=media&token=8c1044c0-b371-4bf2-91e6-e0e7daf87c87')
     import getMyAge from "../../util/helper/getAge";
     import SmileMessage from "./SmileMessage.vue";
 
     export default {
         components: {SmileMessage},
-        props: ['chats', 'tab', 'chatsBlock', 'list', 'nameUser', 'isMobile', 'userName'],
+        props: ['chats', 'tab', 'chatsBlock', 'list', 'nameUser', 'isMobile', 'userName',  'accountPreview', 'accountPreviewMin'],
         name: "ListUsers",
         data: () => ({
             sms,
-            accountPreviewMin,
-            accountPreview,
             messages: 0,
         }),
-        mounted() {
-
-        },
         computed: {
             ...mapState({
                 userProfile: state => state.storeUserProfile.userProfile,
@@ -166,47 +158,7 @@
 </script>
 
 <style scoped>
-    .v-text-field {
-        padding-top: 0px;
-        margin-top: 0px;
-    }
-
-    .v-input__slot {
-        margin: 0;
-        padding: 0;
-    }
-
-    .new-message {
-        text-align: center;
-        width: auto;
-        height: 18px;
-        background-color: #ff1d6c;
-        border-radius: 2px;
-        color: white;
-        padding: 2px 3px 2px 2px;
-        position: absolute;
-        top: 57px;
-        left: 82px;
-    }
-
     .border_radius {
         border-radius: 10px;
-    }
-
-    .isOnline {
-        font-size: 18px;
-        line-height: 18px;
-        position: relative;
-    }
-
-
-    .isOnlineAbsolute {
-        content: "\2022";
-        font-size: 66px;
-        font-weight: 800;
-        left: 83px;
-        line-height: 18px;
-        position: absolute;
-        top: 7px;
     }
 </style>

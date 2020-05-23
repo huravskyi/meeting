@@ -34,34 +34,34 @@ public class ImageService {
         this.userRepo = userRepo;
     }
 
-    public Image addImage(Image newImage, User user) throws IOException {
-        Set<Image> images = imageRepo.findImageByUserId(user.getId());
-        user = userRepo.findUserById(user.getId());
-        if (images.size() > 4) {
-            return new Image(null);
-        }
-        File outPutFile = null;
-        try {
-            outPutFile = new File("image.jpg");
-            outPutFile.createNewFile();
-        } catch (Exception e) {
-            e.fillInStackTrace();
-        }
-        InputStream inputFile = new FileInputStream("./image.jpg");
+//    private Image nextWorkImage(Image newImage, File outPutFile, User user) throws IOException {
+//        String imageDataBytes = newImage.getName().substring(newImage.getName().indexOf(",") + 1);
+//        byte[] decodedImageByte = Base64.getDecoder().decode(imageDataBytes);
+//        BufferedImage bufferedImage = getBufferedImage(decodedImageByte);
+//        boolean setNewImage = ImageIO.write(bufferedImage, "jpg", outPutFile);
+//
+//        if (setNewImage) {
+//            return writeToFireBase(user);
+//        }
+//        return null;
+//    }
+
+    private Image writeToFireBase(User user, Image newImage, Set<Image> images) throws IOException {
+        String imageDataBytes = newImage.getName().substring(newImage.getName().indexOf(",") + 1);
+        byte[] decodedImageByte = Base64.getDecoder().decode(imageDataBytes);
+        BufferedImage bufferedImage = getBufferedImage(decodedImageByte);
+//        boolean setNewImage = ImageIO.write(bufferedImage, "jpg", outPutFile);
+//        InputStream inputFile = new FileInputStream("./image.jpg");
         String name = RandomHelper.generatePassword(6);
         String blobName = user.getId() + "/" + name + ".jpg";
         String bucketName = "meeting-app-af0af.appspot.com";
         String keyPath = "./serviceAccountKey.json";
-
-        String imageDataBytes = newImage.getName().substring(newImage.getName().indexOf(",") + 1);
-        byte[] decodedImageByte = Base64.getDecoder().decode(imageDataBytes);
-        BufferedImage bufferedImage = getBufferedImage(decodedImageByte);
-        ImageIO.write(bufferedImage, "jpg", outPutFile);
-
+        String kmsKeyName = "projects/key-project/locations/us-east1/keyRings/key-ring/cryptoKeys/gs://meeting-app-af0af.appspot.com";
+//        Blob blob = fireBase.getBucket().create(blobName, inputFile, "image/jpg", Bucket.BlobWriteOption.userProject("meeting-app-af0af")
         Blob blob = fireBase.getBucket().create(
-                blobName, inputFile, "image/jpg",
-                Bucket.BlobWriteOption.userProject("meeting-app-af0af")
-        );
+                blobName,
+                decodedImageByte,
+                "image/jpg");
         URL signedUrl = blob.getStorage().signUrl(BlobInfo.newBuilder(bucketName, blobName).build(),
                 10000, TimeUnit.DAYS, Storage.SignUrlOption.signWith(ServiceAccountCredentials.fromStream(
                         new FileInputStream(keyPath))));
@@ -73,9 +73,37 @@ public class ImageService {
             image.setMain(true);
             user.setUserpic(signedUrl);
         }
-        userRepo.save(user);
-        imageRepo.save(image);
-        outPutFile.delete();
+        return image;
+    }
+
+    public Image addImage(Image newImage, User user) {
+        Set<Image> images = imageRepo.findImageByUserId(user.getId());
+        user = userRepo.findUserById(user.getId());
+        if (images.size() > 4) {
+            return new Image(null);
+        }
+
+        Image image = null;
+        try {
+            image = writeToFireBase(user, newImage, images);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (image != null) {
+            userRepo.save(user);
+            imageRepo.save(image);
+        }
+//        File outPutFile = null;
+//        try {
+//            outPutFile = new File("image.jpg");
+//            if (outPutFile.createNewFile()) {
+//
+//                outPutFile.delete();
+//                return image;
+//            }
+//        } catch (Exception e) {
+//            e.fillInStackTrace();
+//        }
         return image;
     }
 

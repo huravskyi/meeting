@@ -34,7 +34,7 @@ public class RegistrationController {
     public String forgotPassword(
             Model model,
             @RequestParam("email") String email
-    ) throws JsonProcessingException {
+    ){
         if (userService.passwordReset(email)) {
             helper(model);
             return "redirect:/login/forgotPassword?success";

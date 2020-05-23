@@ -21,7 +21,7 @@ import java.util.*;
 @Table(name = "usr")
 @AllArgsConstructor
 @RequiredArgsConstructor
-@ToString(of = {"id", "username", "isOnline", "birthDate"})
+@ToString(of = {"id", "username", "isOnline"})
 
 public class User implements UserDetails {
 
