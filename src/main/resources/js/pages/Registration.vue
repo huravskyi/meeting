@@ -216,7 +216,6 @@
     .form-login {
         width: 350px;
         height: 650px;
-        background-color: white;
         padding: 25px;
         border-radius: 15px;
         text-transform: uppercase;
