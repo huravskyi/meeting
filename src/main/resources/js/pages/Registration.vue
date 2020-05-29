@@ -20,7 +20,7 @@
                     <div :v-model="errorSuccess" class="py-2">
                         <p class="red--text">{{err}}</p>
                     </div>
-                    <h1 class="title" align="center">Регистрация</h1>
+                    <h1 class="title text--black" align="center">Регистрация</h1>
                     <v-text-field
                             type="text"
                             name="username"
