@@ -219,9 +219,6 @@
         background-color: white;
         padding: 25px;
         border-radius: 15px;
-        z-index: 2;
-        text-align: center;
-        color: #fff;
         text-transform: uppercase;
         font-family: "Roboto Slab", serif;
         font-weight: 300;
