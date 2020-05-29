@@ -5,7 +5,8 @@
         >
             <v-layout align-center justify-space-around row fill-height>
                 <v-toolbar-title class="font-weight-bold font-italic">
-                    <router-link to="/" title="На главную" style="text-decoration: none">Dating World&ensp;</router-link>
+                    <router-link to="/" title="На главную" style="text-decoration: none">Dating World&ensp;
+                    </router-link>
                 </v-toolbar-title>
 
                 <div class="text-center" v-model="tooltip">
@@ -40,10 +41,11 @@
                             </div>
                             <div v-if="tab.like">
                                 <v-badge v-if="getNewLike()"
-                                         icon="mdi-bell"
-                                         overlap
+                                         icon="notifications"
                                          :value="badgeValue"
                                          color="pink"
+                                         class="badgeLike"
+                                         dark
                                 >
                                     {{tab.name}}
                                 </v-badge>
@@ -52,8 +54,18 @@
                     </v-tabs>
                 </v-toolbar-items>
                 <div class="d-flex">
-                    <template v-if="userProfile">
-                        <div>
+                    <div v-if="userProfile">
+                        <div v-if="isMobile">
+                            <router-link to="/profile/my">
+                                <v-avatar color="indigo">
+                                    <v-img v-if="userProfile.userpic"
+                                           :src="userProfile.userpic"
+                                    ></v-img>
+                                    <v-icon v-else dark>account_circle</v-icon>
+                                </v-avatar>
+                            </router-link>
+                        </div>
+                        <div v-else>
                             <v-menu
                                     left
                                     transition="scroll-y-transition"
@@ -62,7 +74,6 @@
                                     offset-y
                                     close-delay="800"
                                     radius
-
                             >
                                 <template v-slot:activator="{ on }">
                                     <v-avatar v-on="on" color="indigo">
@@ -71,9 +82,9 @@
                                         ></v-img>
                                         <v-icon v-else dark>account_circle</v-icon>
                                     </v-avatar>
-                                    <v-icon v-if="!isMobile" class="rel" v-on="on">keyboard_arrow_down</v-icon>
+                                    <v-icon class="rel" v-on="on">keyboard_arrow_down</v-icon>
                                 </template>
-                                <v-list v-if="!isMobile" class="right_menu">
+                                <v-list class="right_menu">
                                     <v-list-item
                                             v-for="(item, index) in itemsMenu"
                                             :key="index"
@@ -87,8 +98,7 @@
                                 </v-list>
                             </v-menu>
                         </div>
-
-                    </template>
+                    </div>
                     <div v-if="userProfile === null"
                          class="d-flex align-center"
                          style="min-width: 150px">
@@ -227,25 +237,19 @@
     }
 </script>
 
-<style scoped>
+<style>
+
+
+    .v-badge__wrapper .v-badge__badge .v-icon {
+        font-size: 12px !important;
+    }
+
     .v-list-item--link:before {
         background-color: #0a70ff;
     }
 
     .v-menu__content {
         border-radius: 10px;
-    }
-
-    .new-message {
-        display: flex;
-        justify-content: center;
-        width: 20px;
-        height: 20px;
-        background-color: #ff1d6c;
-        border-radius: 2px;
-        color: white;
-        padding: 2px 2px 2px 2px;
-        margin-left: 5px;
     }
 
     .font-italic {

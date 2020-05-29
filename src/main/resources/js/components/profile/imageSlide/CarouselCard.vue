@@ -17,7 +17,7 @@
                            x-large
                            @click="$emit('close-slider', false)"
                     >
-                        <v-icon>close</v-icon>
+                        <v-icon>cancel</v-icon>
                     </v-btn>
                     <v-img :lazy-src="image.urlLink"
                            :src="image.urlLink"

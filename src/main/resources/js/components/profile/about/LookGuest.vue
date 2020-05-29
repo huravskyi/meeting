@@ -10,10 +10,8 @@
 </template>
 
 <script>
-    import {mapState} from "vuex";
-
     export default {
-        props: ['description'],
+        props: ['description', 'profileUserGuest'],
         name: "LookGuest",
         model: [],
         data: () => ({
@@ -42,9 +40,6 @@
                 {title: "внешности", items: ['европейской', 'азиатской', 'восточной', 'африканской', 'татарcкой']},
             ],
         }),
-        computed: {
-            ...mapState({profileUserGuest: state => state.storeUserGuest.userGuest})
-        },
         methods: {
             getLook() {
                 this.model = JSON.parse(JSON.stringify(this.profileUserGuest.profileDetail.look))

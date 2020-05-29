@@ -44,7 +44,11 @@
         name: "EntryField",
 
         mounted() {
+            const chatMessTextarea = document.getElementById('chatMessTextarea')
             chatMessTextarea.addEventListener('paste', this.onPaste);
+            chatMessTextarea.onblur = function () {
+                chatMessTextarea.focus();
+            }
         },
         methods: {
             sendMessageAndSmile() {

@@ -35,12 +35,11 @@ public class Chat {
     @JsonView(Views.FullProfile.class)
     private LocalDateTime creationDate;
     @Lob
-    @Column(columnDefinition="LONGBLOB")
+    @Column(columnDefinition = "LONGBLOB")
     @JsonView(Views.Id.class)
-    private String lastMessage;
+    private Content lastMessage = new Content();
 
-
-    @JsonView(Views.FullProfile.class )
+    @JsonView(Views.FullProfile.class)
     @ManyToMany
     private List<User> members;
 

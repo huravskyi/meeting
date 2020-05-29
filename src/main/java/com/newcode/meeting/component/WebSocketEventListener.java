@@ -24,14 +24,16 @@ public class WebSocketEventListener {
     @EventListener
     public void handleWebSocketConnectListener(SessionConnectedEvent event) {
 //        logger.info("User  connection:=> " + event.getUser().getName());
-        onlineService.setUserOnline(getUserId(Objects.requireNonNull(event.getUser())), true);
+        if (event.getUser() != null)
+            onlineService.setUserOnline(getUserId(event.getUser()), true);
     }
 
 
     @EventListener
     public void handleWebSocketDisconnectListener(SessionDisconnectEvent event) {
 //        logger.info("User Disconnected:=>  " + event.getUser().getName());
-        onlineService.setUserOnline(getUserId(Objects.requireNonNull(event.getUser())), false);
+        if (event.getUser() != null)
+        onlineService.setUserOnline(getUserId(event.getUser()), false);
     }
 
 

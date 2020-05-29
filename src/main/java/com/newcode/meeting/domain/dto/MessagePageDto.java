@@ -21,4 +21,6 @@ public class MessagePageDto {
     private int totalPage;
     private int currentPageNotViewed;
     private int totalPageNotViewed;
+    private boolean isPage;
+
 }

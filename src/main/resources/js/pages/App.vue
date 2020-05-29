@@ -1,13 +1,13 @@
 <template>
 
     <v-app app>
-        <navigation :isMobile="isMobile"></navigation>
+        <navigation v-if="mobileNavigation" :isMobile="isMobile"></navigation>
 
         <v-content>
             <router-view
-                    v-if="profileDetails === null || profileDetails.active && !profileDetails.blocked"></router-view>
+                    v-if="userProfile === null || userProfile.active && !userProfile.blocked"></router-view>
 
-            <v-alert v-else-if="profileDetails.blocked"
+            <v-alert v-else-if="userProfile.blocked"
                      type="warning">
                 <p> Ваша анкета заблокирована или удалена</p>
             </v-alert>
@@ -25,8 +25,9 @@
             </v-alert>
         </v-content>
         <Footer v-if="!isMobile" :isMobile="isMobile"></Footer>
-        <mobile-navigation v-if="isMobile && profileDetails !== null"
+        <mobile-navigation v-if="isMobile && userProfile !== null && mobileNavigation"
                            :chats="chats"
+                           :userProfile="userProfile"
         ></mobile-navigation>
     </v-app>
 </template>
@@ -61,8 +62,9 @@
         },
         computed: {
             ...mapState({
-                profileDetails: state => state.storeUserProfile.userProfile,
+                userProfile: state => state.storeUserProfile.userProfile,
                 chats: state => state.storeMessages.chats,
+                mobileNavigation: state => state.storeMessages.mobileNavigation,
             }),
         },
 
@@ -74,6 +76,7 @@
                 'updateViewedMessageMutation',
                 'createChatAndMessageSocketMutation',
                 'createChatDtoMutation',
+                'setIsMobileMutation'
             ]),
             ...mapActions(['deliveredMessageAction',
                 'deliveredChatMessageAction', 'sendToEmailAction']),
@@ -100,11 +103,11 @@
             },
             onResize() {
                 this.isMobile = window.innerWidth < 766
+                this.setIsMobileMutation(this.isMobile)
             },
         },
         created() {
             addHandler(data => {
-                console.log(data)
                 if (data.objectType === 'MESSAGE') {
                     switch (data.eventType) {
                         case 'CREATE':

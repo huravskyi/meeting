@@ -61,24 +61,19 @@
                                                 mdi-check-all
                                             </v-icon>
                                         </div>
-                                        <router-link :to="/profile/+ `${message.author.id}`">
                                             <v-avatar size="40" class="mx-2">
                                                 <v-img v-if="getMainImage(message)"
                                                        :src="getMainImage(message)"></v-img>
                                                 <v-icon color="#1976d2" v-else size="40">account_circle</v-icon>
                                             </v-avatar>
-                                        </router-link>
                                     </div>
                                     <div class="d-flex justify-start "
                                          v-else>
-                                        <router-link :to="/profile/+ `${message.author.id}`">
                                             <v-avatar size="40" class="mx-2">
                                                 <v-img v-if="getMainImage(message)"
                                                        :src="getMainImage(message)"></v-img>
                                                 <v-icon v-else color="#1976d2" size="40">account_circle</v-icon>
                                             </v-avatar>
-                                        </router-link>
-
                                         <div class="message  flex-nowrap mr-12">
                                             <div class="message_world" :id="getId(message)">
 
@@ -131,6 +126,8 @@
     import {mapActions, mapMutations, mapState} from "vuex";
     import scrollToElement from "../../util/helper/scrollToElement";
     import SmileMessage from "./SmileMessage.vue";
+    import forEachLodash from 'lodash/forEach'
+    import debounceLodash from 'lodash/debounce'
 
     const load = ("https://firebasestorage.googleapis.com/v0/b/meeting-app-af0af.appspot.com/o/load.gif?alt=media&token=8923efec-c9c1-4234-9ea7-ed1235077fa8")
     export default {
@@ -149,6 +146,9 @@
             element: null,
         }),
         watch: {
+            getMessagesText(){
+                setTimeout(this.windowListener, 1000)
+            },
             blockAction() {
                 this.setBlockMutation()
                 this.snackbar = true
@@ -195,7 +195,7 @@
             }
         },
         created() {
-            this.deferredCall = _.debounce(this.setMessageViewed, 2500)
+            this.deferredCall = debounceLodash(this.setMessageViewed, 2500)
         },
         methods: {
             ...mapActions(['setViewedAction', 'getMessageFromDbAction', 'downloadNewMessageFromDbAction']),
@@ -207,6 +207,7 @@
                         chat: chat,
                         page: 0
                     }
+                    this
                     this.getMessageFromDbAction(obj)
                 }
             },
@@ -218,7 +219,7 @@
             },
             getIdElement() {
                 let id
-                _.forEach([...this.listId], item => {
+                forEachLodash([...this.listId], item => {
                     id = item
                     return false
                 })
@@ -308,18 +309,7 @@
                 }
             },
             getTime(time) {
-                let date = new Date(time);
-                let d = date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds()
-                return this.formatDate(date)
-            },
-
-            formatDate(date) {
-                let hh = date.getHours()
-                if (hh < 10) hh = '0' + hh
-                let mm = date.getMinutes()
-                if (mm < 10) mm = '0' + mm
-
-                return hh + ':' + mm
+                return time.slice(14, 19)
             },
             getMainImage(message) {
                 if (message.author.userpic === null) return false

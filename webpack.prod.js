@@ -9,7 +9,9 @@ module.exports = merge(common, {
         new CleanWebpackPlugin()
     ],
     output: {
-        filename: 'main.js',
-        path: path.resolve(__dirname, 'src', 'main', 'resources', 'static', 'js')
+        path: path.resolve(__dirname, 'src', 'main', 'resources', 'static'),
+            filename: '[name].js',
+            chunkFilename: '[name].js',
+            publicPath: '/'
     }
 });

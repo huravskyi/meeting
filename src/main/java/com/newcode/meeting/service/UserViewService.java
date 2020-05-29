@@ -19,7 +19,6 @@ public class UserViewService {
 
     public UserViewDto getListWhoViewsUser(User owner, Pageable pageable) {
         Page<UserView> page = userViewRepo.findByOwner(owner, pageable);
-
         return new UserViewDto(
                 page.getContent(),
                 page.getNumber(),

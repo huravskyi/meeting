@@ -16,5 +16,8 @@ export default function setMessageToChat(chats, obj, add) {
         chats[index].currentPage = obj.data.currentPage
         chats[index].totalPage = obj.data.totalPage
     }
+    if(add === 'all'){
+        chats[index].page = obj.data.page
+    }
     return chats
 }

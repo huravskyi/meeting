@@ -3,6 +3,7 @@
         <v-container>
             <v-row align="start"
                    justify="center"
+                   style="margin-bottom: 34px"
             >
                 <v-col :sm="isMobile?'6':'5'"
                        lg="4"
@@ -12,7 +13,8 @@
                                         :myProfile="myProfile"
                                         :isMobile="isMobile"
                     ></user-name-and-city>
-                    <image-main :profileUserGuest="profileUserGuest" :myProfile="myProfile" :isMobile="isMobile" :class="isMobile? 'pt-0':'pt-8'"></image-main>
+                    <image-main :profileUserGuest="profileUserGuest" :myProfile="myProfile" :isMobile="isMobile"
+                                :class="isMobile? 'pt-0':'pt-8'"></image-main>
                 </v-col>
                 <v-col sm="7"
                        lg="8"
@@ -27,7 +29,11 @@
                             ></user-name-and-city>
                             <image-slide :myProfile="myProfile" :isMobile="isMobile"></image-slide>
                             <v-divider class="ma-5"></v-divider>
-                            <about  :myProfile="myProfile"></about>
+                            <about
+                                    :myProfile="myProfile"
+                                    :profileDetails="profileDetails"
+                                    :profileUserGuest="profileUserGuest"
+                            ></about>
                         </v-col>
                     </v-row>
                 </v-col>
@@ -53,21 +59,10 @@
         },
         name: "Profile",
         data: () => ({
-            isMobile: false,
             myProfile: null,
         }),
         created() {
             this.updateProfile()
-        },
-        beforeDestroy() {
-            if (typeof window !== 'undefined') {
-                window.removeEventListener('resize', this.onResize, {passive: true})
-            }
-        },
-
-        mounted() {
-            this.onResize()
-            window.addEventListener('resize', this.onResize, {passive: true})
         },
         watch: {
             '$route'() {
@@ -76,14 +71,15 @@
         },
         computed: {
             ...mapState({
-                profileUserGuest: state => state.storeUserGuest.userGuest
+                profileUserGuest: state => state.storeUserGuest.userGuest,
+                profileDetails: state => state.storeProfileDetails.profileDetails,
+                isMobile: state => state.storeUserProfile.isMobile,
+
+
             }),
         },
         methods: {
             ...mapActions(['setProfileUserGuestAction']),
-            onResize() {
-                this.isMobile = window.innerWidth < 766
-            },
             async updateProfile() {
                 if (!window.location.pathname.toString().includes('my')) {
                     const id = Number(this.$route.params.id)

@@ -8,21 +8,21 @@ import com.newcode.meeting.dto.ObjectType;
 import com.newcode.meeting.repo.ChatRepo;
 import com.newcode.meeting.repo.UserRepo;
 import com.newcode.meeting.util.WsSender;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManager;
 import java.util.*;
 
 @Service
 public class MainService {
     private final ChatRepo chatRepo;
     private final WsSender ws;
+    private final UserRepo userRepo;
 
 
-    public MainService(ChatRepo chatRepo, WsSender ws) {
+    public MainService(ChatRepo chatRepo, WsSender ws, UserRepo userRepo) {
         this.chatRepo = chatRepo;
         this.ws = ws;
+        this.userRepo = userRepo;
     }
 
     public void updateMessage(User user) throws JsonProcessingException {
@@ -39,7 +39,6 @@ public class MainService {
                     ws.wsSender(chat.getId(), userTo, ObjectType.MESSAGE, EventType.DELIVEREDAll);
                 }
             }
-
             chatRepo.updateMessageDelivered(user.getChats(), user);
             chatRepo.updateMessageViewedPage(user.getChats(), user);
         }

@@ -101,10 +101,11 @@
         computed: {
             ...mapState({
                 chats: state => state.storeMessages.chats,
+                isMobile: state => state.storeUserProfile.isMobile,
             }),
         },
         methods: {
-            ...mapMutations(['writeNewMessageAndNewChatMutation', 'setToUpChatMutation']),
+            ...mapMutations(['writeNewMessageAndNewChatMutation', 'setToUpChatMutation', 'mobileNavigationMutation']),
             getMainImage(user) {
                 return user.userpic ? user.userpic : this.accountPreview
             },
@@ -128,7 +129,6 @@
             },
             writeNewMessage(userTo) {
                 let index = this.checkMessage(userTo)
-                console.log(index)
                 const userFrom = this.userProfile
                 if (index === undefined) {
                     const chat = {
@@ -139,6 +139,9 @@
                     this.writeNewMessageAndNewChatMutation(chat)
                 }else {
                     this.setToUpChatMutation(index)
+                }
+                if (this.isMobile){
+                    this.mobileNavigationMutation(false)
                 }
             },
         }

@@ -49,7 +49,7 @@
     import {mapState, mapActions} from 'vuex'
 
     export default {
-        props: ['isEditing', 'description'],
+        props: ['isEditing', 'description', 'profileDetails'],
         name: "Target",
         data: () => ({
             form: '',
@@ -68,11 +68,6 @@
             if (this.profileDetails.target) {
                 this.checkBox = this.profileDetails.target.split(", ")
             }
-        },
-        computed: {
-            ...mapState({
-                profileDetails: state => state.storeProfileDetails.profileDetails
-            }),
         },
         methods: {
             ...mapActions(['editAbout']),

@@ -28,9 +28,9 @@
                     class="title_menu"
             >
                 <v-list-item-icon>
-                    <v-icon class="icon_menu">{{item.icon}}</v-icon>
+                    <v-icon class="icon_menu">{{image.hide && item.icon ==='lock'?'mdi-lock-open':item.icon}}</v-icon>
                 </v-list-item-icon>
-                <v-list-item-title>{{image.hide?"Открыть фото":item.title}}</v-list-item-title>
+                <v-list-item-title>{{image.hide && item.icon ==='lock'?'Открыть фото':item.title}}</v-list-item-title>
             </v-list-item>
         </v-list>
     </v-menu>

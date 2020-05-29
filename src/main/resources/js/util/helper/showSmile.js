@@ -62,7 +62,7 @@ function emojiToHtml(str) {
 }
 
 let tpl = '<img style="height: 26px ; padding: 1px" class="emoji emoji--{code} js-smile-insert" src="{src}" srcset="{src} 1x, {src_x2} 2x" unselectable="on">';
-let url2 = 'https://badoocdn.com/big/chat/emoji/{code}.png';
+// let url2 = 'https://badoocdn.com/big/chat/emoji/{code}.png';
 let url = 'https://badoocdn.com/big/chat/emoji@x2/{code}.png';
 function buildImgFromEmoji(emoji) {
     var codePoint = extractEmojiToCodePoint(emoji);
@@ -71,7 +71,7 @@ function buildImgFromEmoji(emoji) {
         src: $tpl(url, {
             code: codePoint
         }),
-        src_x2: $tpl(url2, {
+        src_x2: $tpl(url, {
             code: codePoint
         })
     });

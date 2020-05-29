@@ -10,14 +10,9 @@
 </template>
 
 <script>
-    import {mapState} from "vuex";
-
     export default {
-        props: ['description'],
+        props: ['description', 'profileUserGuest'],
         name: "PersonalInformationGuest",
-        computed: {
-            ...mapState({profileUserGuest: state => state.storeUserGuest.userGuest})
-        },
         methods: {
             getChoice() {
                 if (this.profileUserGuest.profileDetail.personalInformation)

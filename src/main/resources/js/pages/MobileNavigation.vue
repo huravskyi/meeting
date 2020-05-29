@@ -13,7 +13,14 @@
                to="/sympathy"
         >
             <span>Симпатии</span>
-            <v-icon>mdi-heart</v-icon>
+            <v-badge v-if="getNewLike()"
+                     icon="notifications"
+                     overlap
+                     :value="badgeValue"
+                     color="pink"
+            >
+                <v-icon>mdi-heart</v-icon>
+            </v-badge>
         </v-btn>
 
         <v-btn min-width="60"
@@ -66,9 +73,11 @@
     export default {
         props: {
             chats: Array,
+            userProfile:Object
         },
         name: "MobileNavigation",
         data: () => ({
+            badgeValue: true,
             messages: 0,
             itemsMenu: [
                 {title: 'Профиль', to: '/profile/my'},
@@ -78,6 +87,10 @@
         }),
 
         methods: {
+            getNewLike() {
+                this.userProfile.likeNew === 1 ? this.badgeValue = true : this.badgeValue = false
+                return true
+            },
             selectItemMenu(item) {
                 if (item.to === '/logout') {
                     location.reload()

@@ -74,10 +74,9 @@
             },
             getUserId(chat) {
                 let id
-                _.forEach(chat.members, item => {
+                chat.members.forEach(item => {
                     if (item.id !== this.userProfile.id) {
                         id = item.id
-                        return false
                     }
                 })
                 return id

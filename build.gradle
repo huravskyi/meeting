@@ -26,15 +26,15 @@ group = 'com.newcode'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
 
-//configurations {
-//	developmentOnly
-//	runtimeClasspath {
-//		extendsFrom developmentOnly
-//	}
-//	compileOnly {
-//		extendsFrom annotationProcessor
-//	}
-//}
+configurations {
+	developmentOnly
+	runtimeClasspath {
+		extendsFrom developmentOnly
+	}
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
 
 task buildFront(type: YarnTask) {
 	args = ['build']
@@ -47,7 +47,7 @@ processResources.dependsOn(buildFront)
 repositories {
 	mavenCentral()
 }
-//перед деплоем устанавливам для нодаheroku login
+////перед деплоем устанавливам для нодаheroku login
 node {
 	download = true
 }

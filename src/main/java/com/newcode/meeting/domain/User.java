@@ -42,6 +42,7 @@ public class User implements UserDetails {
     @JsonView(Views.IdName.class)
     private Gender gender;
     @JsonView(Views.IdName.class)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate birthDate;
     @JsonView(Views.Name.class)
     private boolean isOnline;

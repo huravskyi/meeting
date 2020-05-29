@@ -3,12 +3,16 @@ import userApi from "../../api/user"
 
 export default {
     state: {
+        isMobile:false,
         userProfile,
         accountPreview: ('https://firebasestorage.googleapis.com/v0/b/meeting-app-af0af.appspot.com/o/accountPreview.png?alt=media&token=8c1044c0-b371-4bf2-91e6-e0e7daf87c87'),
         accountPreviewMin:('https://firebasestorage.googleapis.com/v0/b/meeting-app-af0af.appspot.com/o/accountPreview-min.png?alt=media&token=209837ce-9ee9-47a7-ab45-7ba39d551f82')
     },
 
     mutations: {
+        setIsMobileMutation(state, isMobile){
+            state.isMobile = isMobile
+        },
         setProfileLikeNewMutation(state, item) {
             state.userProfile.likeNew = item
         },

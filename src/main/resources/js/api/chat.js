@@ -20,7 +20,7 @@ export default {
     getMessagesForPage: obj => messages.get(
         {page: obj.page, chat: obj.chat.id, numberOfNewMessage: obj.chat.numberOfNewMessage}),
     setViewed: chat => messageIds.save({}, chat),
-    downloadOldMessage: obj => oldMessages.get({page: obj.page, chat: obj.chat.id}),
+    downloadOldMessage: obj => oldMessages.get({page: obj.page, chat: obj.chat.id, idMessage: obj.idMessage}),
     downloadNewMessage: obj => newMessages.get({page: obj.page, chat: obj.chat.id})
 
 

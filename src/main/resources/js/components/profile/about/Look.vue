@@ -95,10 +95,10 @@
 </template>
 
 <script>
-    import {mapActions, mapState} from 'vuex'
+    import {mapActions} from 'vuex'
 
     export default {
-        props: ['isEditing', 'description'],
+        props: ['isEditing', 'description', 'profileDetails'],
         name: "Look",
         data: () => ({
             model: [],
@@ -139,12 +139,6 @@
         mounted() {
             if (this.profileDetails.look)
             this.model = JSON.parse(JSON.stringify(this.profileDetails.look))
-        },
-        computed: {
-            ...mapState({
-                userProfile: state => state.storeUserProfile.userProfile,
-                profileDetails: state => state.storeProfileDetails.profileDetails
-            }),
         },
         methods: {
             ...mapActions(['editLook']),

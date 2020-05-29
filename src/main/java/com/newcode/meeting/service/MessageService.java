@@ -21,10 +21,8 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class MessageService {
@@ -58,18 +56,17 @@ public class MessageService {
 
     private Message createMessage(Chat chat, Message message, User author, User userTo) throws IOException {
         chat.setUpdatedDate(LocalDateTime.now());
-        chat.setLastMessage(message.getContent().getContent());
+        chat.setLastMessage(message.getContent());
         message.setChat(chat);
 
         setNewMessage(message, author);
 
         Message newMessage = messageRepo.save(message);
-        if (newMessage.getContent().getContent() == null || newMessage.getContent().getContent().equals("")){
+        if (newMessage.getContent().getContent() == null || newMessage.getContent().getContent().equals("")) {
             messageRepo.delete(newMessage);
             return null;
-        }else {
+        } else {
             newMessage.setChat(new Chat(chat.getId()));
-
             List<Chat> chats = userTo.getChatsDeleted();
             if (chats.contains(chat)) {
                 chats.remove(chat);
@@ -80,6 +77,7 @@ public class MessageService {
             } else {
                 ws.wsSender(newMessage, userTo, ObjectType.MESSAGE, EventType.CREATE);
             }
+            userRepo.save(userTo);
             return newMessage;
         }
     }
@@ -90,7 +88,6 @@ public class MessageService {
         message.setViewed(false);
         message.setViewedPage(false);
         message.setCreationDate(LocalDateTime.now());
-//        message.getContent().setMessage(message);
         Meta.fillMeta(message.getContent());
     }
 
@@ -111,32 +108,33 @@ public class MessageService {
             page = messageRepo.findByChat(chat, pageable);
         }
         messages.addAll(page.getContent());
-
         messages.sort(Comparator.comparing(Message::getId));
+
         return new MessagePageDto(
                 messages,
                 page.getNumber(),
                 page.getTotalPages(),
                 currentPageNotViewed,
-                totalPageNotViewed
+                totalPageNotViewed,
+                page.getNumber() + 1 < page.getTotalPages()
         );
     }
 
     public MessagePageDto getNewMessageListForChat(Chat chat, Pageable pageable) {
         Page<Message> page = messageRepo.findByChatAndViewedPageOrderByIdAsc(chat, false, pageable);
-
         return new MessagePageDto(
                 page.getContent(),
                 0,
                 0,
                 page.getNumber(),
-                page.getTotalPages()
+                page.getTotalPages(),
+                false
         );
     }
 
     public MessagePageDto getNewListOldMessageListForChat(Chat chat, User author) throws JsonProcessingException {
         Sort sort = Sort.by(Sort.Direction.DESC, "id");
-        Pageable pageable = PageRequest.of(0, 6, sort);
+        Pageable pageable = PageRequest.of(0, 5, sort);
         List<Long> ids = new ArrayList<>();
         List<Message> messages = messageRepo.findByChatAndViewedAndAuthorNot(chat, false, author);
         for (Message message : messages) {
@@ -145,23 +143,28 @@ public class MessageService {
         chat.setMessages(messages);
         ws.wsSender(chat, getUserTo(chat.getMembers(), author), ObjectType.MESSAGE, EventType.VIEWED);
         messageRepo.updateMessageViewedAndViewedPageForIds(ids);
-        return getMessagePageDto(chat, pageable);
+        Page<Message> page = messageRepo.findByChat(chat, pageable);
+        List<Message> newMessage = new ArrayList<>(page.getContent());
+        newMessage.sort(Comparator.comparing(Message::getId));
+        return new MessagePageDto(
+                newMessage,
+                page.getNumber(),
+                page.getTotalPages(),
+                0,
+                0,
+                true
+        );
     }
 
-    public MessagePageDto getOldMessageListForChat(Chat chat, Pageable pageable) {
-        return getMessagePageDto(chat, pageable);
-    }
-
-    private MessagePageDto getMessagePageDto(Chat chat, Pageable pageable) {
-        Page<Message> page = messageRepo.findByChatAndViewedPage(chat, true, pageable);
-        List<Message> messages = new ArrayList<>(page.getContent());
-        messages.sort(Comparator.comparing(Message::getId));
+    public MessagePageDto getOldMessageListForChat(Chat chat, Pageable pageable, Long idMessage) {
+        Page<Message> page = messageRepo.findByChatAndIdIsBetween(chat, 1L, idMessage, pageable);
         return new MessagePageDto(
                 page.getContent(),
                 page.getNumber(),
                 page.getTotalPages(),
                 0,
-                0
+                0,
+                false
         );
     }
 
@@ -181,6 +184,7 @@ public class MessageService {
     }
 
     public Boolean editMessageViewed(Chat chat, User user) throws JsonProcessingException {
+        user = userRepo.findUserById(user.getId());
         List<Long> ids = new ArrayList<>();
         for (Message message : chat.getMessages()) {
             ids.add(message.getId());

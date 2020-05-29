@@ -63,7 +63,7 @@
     import {mapState, mapActions} from 'vuex'
 
     export default {
-        props: ['isEditing', 'description'],
+        props: ['isEditing', 'description', 'profileDetails'],
         name: "PersonalInformation",
         data: () => ({
             itemsPersonal: '',
@@ -88,7 +88,6 @@
         },
         computed: {
             ...mapState({
-                profileDetails: state => state.storeProfileDetails.profileDetails,
                 userProfile: state => state.storeUserProfile.userProfile
             }),
 

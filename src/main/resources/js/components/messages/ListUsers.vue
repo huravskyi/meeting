@@ -4,7 +4,7 @@
                 :class="'mx-auto '+`${isMobile? ' pt-12':''}`"
                 flat
         >
-            <template v-for="(item, index) in list.content">
+            <template v-for="(item, index) in list.content?list.content:[]">
                 <v-list-item :key="index">
                     <v-list-item-icon class="mr-3">
                         <router-link :to="/profile/+ `${getUser(item).id}`">
@@ -24,7 +24,8 @@
                                                 align="center"
                                                 justify="center"
                                         >
-                                            <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
+                                            <v-progress-circular indeterminate
+                                                                 color="grey lighten-5"></v-progress-circular>
                                         </v-row>
 
                                     </template>
@@ -34,7 +35,7 @@
                         </router-link>
                     </v-list-item-icon>
 
-                    <v-list-item-content>
+                    <v-list-item-content @click="hideMobileNavigation()">
                         <v-list-item-title>
                             <v-badge
                                     :color="`${item.online? '#21ff0b': '#ffac32'}`"
@@ -47,8 +48,9 @@
 
                         </v-list-item-title>
                         <v-list-item-subtitle>
-
-                            <smile-message :message="item.lastMessage"></smile-message>
+                            <smile-message
+                                    :message="item.lastMessage!== undefined?item.lastMessage.content:''">
+                            </smile-message>
 
                         </v-list-item-subtitle>
                     </v-list-item-content>
@@ -67,14 +69,15 @@
 </template>
 
 <script>
-    import {mapState} from "vuex";
+    import {mapMutations, mapState} from "vuex";
+
     const sms = ("https://firebasestorage.googleapis.com/v0/b/meeting-app-af0af.appspot.com/o/sms1.mp3?alt=media&token=338e5d21-e7ec-4a3b-be41-f2a24378a45d")
     import getMyAge from "../../util/helper/getAge";
     import SmileMessage from "./SmileMessage.vue";
 
     export default {
         components: {SmileMessage},
-        props: ['chats', 'tab', 'chatsBlock', 'list', 'nameUser', 'isMobile', 'userName',  'accountPreview', 'accountPreviewMin'],
+        props: ['isMobile', 'chats', 'tab', 'chatsBlock', 'list', 'nameUser', 'isMobile', 'userName', 'accountPreview', 'accountPreviewMin'],
         name: "ListUsers",
         data: () => ({
             sms,
@@ -91,6 +94,12 @@
             },
         },
         methods: {
+            ...mapMutations(['mobileNavigationMutation']),
+            hideMobileNavigation() {
+                if (this.isMobile) {
+                    this.mobileNavigationMutation(false)
+                }
+            },
             setName(val) {
                 if (val === null) {
                     if (this.tab === 0) {
@@ -108,7 +117,7 @@
                     const newListContent = []
                     let user
                     this.list.content.forEach((item, index) => {
-                        _.forEach(item.members, itm => {
+                        item.members.forEach(itm => {
                             if (itm.id !== this.userProfile.id) {
                                 user = itm
                                 return false
@@ -119,13 +128,6 @@
                         }
                     })
                     this.list.content = newListContent
-                }
-            },
-            getLastMessage(item) {
-                if (item.messages.length === 0) {
-                    return item.lastMessage
-                } else {
-                    return item.messages[item.messages.length - 1].content.content
                 }
             },
             getMainImage(item) {
@@ -145,10 +147,9 @@
             },
             getAge(item) {
                 let date
-                _.forEach(item.members, itm => {
-                    if (itm.id !== this.userProfile.id) {
-                        date = itm.birthDate
-                        return false
+                item.members.forEach(item => {
+                    if (item.id !== this.userProfile.id) {
+                        date = item.birthDate
                     }
                 })
                 return getMyAge(date)

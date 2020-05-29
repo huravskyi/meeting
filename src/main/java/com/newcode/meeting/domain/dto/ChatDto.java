@@ -5,10 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import com.newcode.meeting.domain.Chat;
-import com.newcode.meeting.domain.Message;
-import com.newcode.meeting.domain.User;
-import com.newcode.meeting.domain.Views;
+import com.newcode.meeting.domain.*;
 import lombok.*;
 
 import java.io.Serializable;
@@ -31,7 +28,7 @@ import java.util.List;
 public class ChatDto implements Serializable {
     private Long id;
     private LocalDateTime updatedDate;
-    private String lastMessage;
+    private Content lastMessage;
     private List<User> members;
     private List<Message> messages = new ArrayList<>();
     private Long numberOfNewMessage;

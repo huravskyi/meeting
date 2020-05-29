@@ -48,10 +48,9 @@
 </template>
 
 <script>
-    import {mapState, mapActions} from 'vuex'
-
+    import {mapActions} from 'vuex'
     export default {
-        props: ['isEditing', 'description'],
+        props: ['isEditing', 'description', 'profileDetails'],
         name: "Hobby",
         data: () => ({
             checkBox: [],
@@ -71,18 +70,12 @@
                 {value: 'Танцы'},
                 {value: 'Машины'},
                 {value: 'Кулинария'},
-
             ],
         }),
         mounted() {
             if (this.profileDetails.hobby) {
                 this.checkBox = this.profileDetails.hobby.split(", ")
             }
-        },
-        computed: {
-            ...mapState({
-                profileDetails: state => state.storeProfileDetails.profileDetails
-            }),
         },
         methods: {
             ...mapActions(['editAbout']),

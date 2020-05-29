@@ -15,9 +15,9 @@
            v-if="(profileDetails) && (!isEditing.about)">
             {{profileDetails.textAbout}}</p>
         <v-expansion-panel-content>
-            <v-textarea v-model="textAbout"
+            <v-text-field v-model="textAbout"
                         @keyup.enter.exact=" $emit('close-panel', []), save()"
-            ></v-textarea>
+            ></v-text-field>
 
             <v-card-actions>
                 <div class="flex-grow-1"></div>
@@ -33,10 +33,10 @@
 </template>
 
 <script>
-    import {mapState, mapActions} from 'vuex'
+    import {mapActions} from 'vuex'
 
     export default {
-        props: ['isEditing', 'description'],
+        props: ['isEditing', 'description', 'profileDetails'],
         name: "AboutMe",
         data: () => ({
             textAbout: '',
@@ -44,12 +44,6 @@
         mounted() {
             if (this.profileDetails.textAbout)
                 this.textAbout = JSON.parse(JSON.stringify(this.profileDetails.textAbout))
-        },
-        computed: {
-            ...mapState({
-                userProfile: state => state.storeUserProfile.userProfile,
-                profileDetails: state => state.storeProfileDetails.profileDetails,
-            }),
         },
         methods: {
             ...mapActions(['editAbout']),

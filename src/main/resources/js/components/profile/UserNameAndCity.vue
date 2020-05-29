@@ -138,8 +138,8 @@
     import LikedButton from "./LikedButton.vue";
     import ChooseAge from "./ChooseAge.vue";
     import AutocompleteCity from "./AutocompleteCity.vue";
-    import getLocate from "../../util/helper/getLocate";
 
+    const getFunctionLodash = () => import("../../util/helper/functionLodash");
     export default {
         components: {AutocompleteCity, ChooseAge, LikedButton},
         props: ['isMobile', 'myProfile'],
@@ -204,37 +204,38 @@
                 let locale = this.$refs.formCity.locale
                 this.isEditing = !this.isEditing
                 this.panel.splice(0, 1)
-                let city = null
-                let region = null
-                let country = null
                 if (locale === undefined) {
                     this.textSnackbar = 'Город должен быть указан'
                     this.modelSnackbar = true
                 } else {
                     if (typeof locale === 'string') {
-                        city = this.userProfile.city
-                        region = this.userProfile.region
-                        country = this.userProfile.country
+                        const locate = {
+                            city: this.userProfile.city,
+                            region: this.userProfile.region,
+                            country: this.userProfile.country,
+                        }
+                        this.userUpdate(locate)
                     } else {
-                        const locate = getLocate(locale, this.entries)
-                        city = locate.city
-                        region = locate.region
-                        country = locate.country
+                        getFunctionLodash().then(res => {
+                            this.userUpdate(res.getLocateUser(locale, this.entries))
+                        })
                     }
 
-                    const user = {
-                        id: this.userProfile.id,
-                        username: this.username,
-                        birthDate: this.$refs.header.inputs[1].value,
-                        city,
-                        region,
-                        country
-                    }
-
-                    const result = this.updateNameAndCityActions(user)
-                    result ? this.textSnackbar = 'Ваш профель обновлен' : this.textSnackbar = 'Что-то пошло не так! Попробуйте позже'
-                    this.modelSnackbar = true
                 }
+            },
+            userUpdate(locate) {
+                const user = {
+                    id: this.userProfile.id,
+                    username: this.username,
+                    birthDate: this.$refs.header.inputs[1].value,
+                    city: locate.city,
+                    region: locate.region,
+                    country: locate.country
+                }
+
+                const result = this.updateNameAndCityActions(user)
+                result ? this.textSnackbar = 'Ваш профель обновлен' : this.textSnackbar = 'Что-то пошло не так! Попробуйте позже'
+                this.modelSnackbar = true
             },
             editing() {
                 if (this.panel.length === 0) {

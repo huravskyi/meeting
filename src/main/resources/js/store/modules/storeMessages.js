@@ -2,7 +2,7 @@ import chatApi from '../../api/chat.js'
 import scrollToElement from "../../util/helper/scrollToElement";
 import Vue from 'vue'
 import userApi from "../../api/user";
-import getIndexForChatBlock from "../../util/helper/getIndexChat";
+import {getIndexForChatBlock} from "../../util/helper/functionLodash";
 import setMessage from "../../util/helper/setMessage";
 import setMessageToChat from "../../util/helper/setMessagesToChat";
 import findChat from "../../util/helper/findChat";
@@ -13,8 +13,16 @@ export default {
         chatsBlock,
         messageIdList: new Set(),
         blockAction: false,
+        mobileNavigation:true,
+        idLastMessage:new Map()
     },
     mutations: {
+        setIdLastMessageMutation(state, map){
+            state.idLastMessage.set(map.key, map.value)
+        },
+        mobileNavigationMutation(state, show){
+            state.mobileNavigation = show
+        },
         setBlockMutation(state) {
             state.blockAction = false
         },
@@ -45,7 +53,7 @@ export default {
             const indexChat = state.chats.findIndex(item => item.id === chat.id)
 
             state.chats[indexChat].messages.forEach((itemOld, indexMessage) => {
-                _.forEach(chat.messages, itemNew => {
+                chat.messages.forEach(itemNew => {
                     if (itemNew.id === itemOld.id) {
                         state.chats[indexChat].messages[indexMessage].viewed = true
                         return false
@@ -89,7 +97,7 @@ export default {
                 message.chat.id === undefined ? item.id === message.chat : item.id === message.chat.id)
             if (index === -1) {
             } else {
-                state.chats[index].lastMessage = message.content.content
+                state.chats[index].lastMessage.content = message.content.content
                 if (state.chats[index].messages.length !== 0) {
                     if ((state.chats[index].totalPageNotViewed - state.chats[index].currentPageNotViewed) <= 1) {
                         state.chats[index].messages.push(message)
@@ -107,7 +115,7 @@ export default {
         addMessageMutation(state, message) {
             const index = state.chats.findIndex(item =>
                 message.chat.id === undefined ? item.id === message.chat : item.id === message.chat.id)
-            state.chats[index].lastMessage = message.content.content
+            state.chats[index].lastMessage.content = message.content.content
             const targetMessages = state.chats[index].messages
                 .concat(message)
                 .reduce((res, val) => {
@@ -199,6 +207,7 @@ export default {
             state.chats[indexChat].currentPageNotViewed = obj.data.currentPageNotViewed
             state.chats[indexChat].totalPageNotViewed = obj.data.totalPageNotViewed
             state.chats[indexChat].numberOfNewMessage = 0
+            state.chats[indexChat].page = true
         }
     }
     ,

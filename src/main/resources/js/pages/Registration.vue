@@ -35,7 +35,7 @@
                     <v-text-field
                             autocomplete="new-password"
                             :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
-                            label="Password"
+                            label="Пароль"
                             required
                             :type="show ? 'text' : 'password'"
                             name="password"
@@ -94,7 +94,7 @@
     import ChooseAge from "../components/profile/ChooseAge.vue";
     import AutocompleteCity from "../components/profile/AutocompleteCity.vue";
     import ForgotPassword from "./ForgotPassword.vue";
-    import getLocate from "../util/helper/getLocate";
+    const getFunctionLodash = () => import("../util/helper/functionLodash");
 
     export default {
         name: "Registration",
@@ -173,15 +173,16 @@
             setLocalStorage(key, value) {
                 localStorage.setItem(key, value)
             },
-
             submitForm() {
                 const entries = this.$refs.formCity.entries
-                const locale = this.$refs.form.inputs[2].lazyValue
-                const locate = getLocate(locale, entries)
-
-
+                let locale = this.$refs.form.inputs[2].lazyValue
+                let locate
+                getFunctionLodash().then(res => {
+                    this.sendForm(res.getLocateUser(locale, entries))
+                })
+            },
+            sendForm(locate){
                 let form = document.getElementById('formLogin')
-                console.log(form)
                 let inputCity = document.createElement('input');
                 let inputRegion = document.createElement('input');
                 let inputCountry = document.createElement('input');

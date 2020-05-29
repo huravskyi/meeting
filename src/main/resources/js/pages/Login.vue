@@ -26,7 +26,7 @@
                                   :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
                                   @click:append="show = !show"
                                   :type="show ? 'text' : 'password'"
-                                  label="Password"
+                                  label="Пароль"
                                   v-model="password"
                                   required
                                   :rules="passwordRules"

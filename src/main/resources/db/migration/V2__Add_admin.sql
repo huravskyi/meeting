@@ -1,9 +1,10 @@
-insert into usr (id, username, password, gender, active, email, blocked, is_online)
+insert into usr (id, username, password, gender, birth_date, active, email, blocked, is_online)
 values (
         1,
         'admin',
         '$2a$06$UMzvW8jD1ucd7ffoBGFhY.VsFaixBHS59j.5i8vKrl9Fg9EN6OtMW',
         'MALE',
+        DATE ('1979-08-07'),
         true,
         'guravskiy79@gmail.com',
         false,

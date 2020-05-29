@@ -64,12 +64,13 @@
                                        :heightForScroll="heightForScroll"
                         ></list-messages>
                     </div>
-                    <entry-field :displayColBlock="'none'"
-                                 :cols="'2'"
-                                 :class-col="'pa-0'"
-                                 :sendMessage="sendMessage"
-                    ></entry-field>
-
+                    <div style="position: fixed; bottom: 0; width: calc(100% - 20px);">
+                        <entry-field :displayColBlock="'none'"
+                                     :cols="'2'"
+                                     :class-col="'pa-0'"
+                                     :sendMessage="sendMessage"
+                        ></entry-field>
+                    </div>
                 </div>
             </v-container>
         </div>
@@ -197,7 +198,7 @@
 
 <script>
     import Vue from 'vue'
-    import {mapActions, mapState, mapGetters} from "vuex";
+    import {mapActions, mapMutations, mapState} from "vuex";
     import ListUsers from "../components/messages/ListUsers.vue";
     import ListMessages from "../components/messages/ListMessages.vue";
     import ButtonMenuMessage from "../components/messages/ButtonMenuMessage.vue";
@@ -216,9 +217,8 @@
             return {
                 heightForScroll: '100px',
                 userName: null,
-                isMobile: false,
                 selected: undefined,
-                tab: null,
+                tab: 0,
                 isLoading: false,
                 tabTitle: [
                     {
@@ -241,7 +241,9 @@
                 accountPreview: state => state.storeUserProfile.accountPreview,
                 accountPreviewMin: state => state.storeUserProfile.accountPreviewMin,
                 chats: state => state.storeMessages.chats,
+                idLastMessage: state => state.storeMessages.idLastMessage,
                 chatsBlock: state => state.storeMessages.chatsBlock,
+                isMobile: state => state.storeUserProfile.isMobile,
             }),
         },
         watch: {
@@ -252,30 +254,27 @@
         },
         beforeDestroy() {
             if (typeof window !== 'undefined') {
-                window.removeEventListener('resize', this.onResize, {passive: true})
                 window.removeEventListener('resize', this.reportWindowSize)
             }
         },
         mounted() {
-            this.onResize()
-            window.addEventListener('resize', this.onResize, {passive: true})
             this.getMessages()
             window.addEventListener('resize', this.reportWindowSize);
             this.reportWindowSize()
         },
         methods: {
+            ...mapMutations(['setIdLastMessageMutation']),
             ...mapActions(['saveMessageActions',
                 'saveNewChatAndMessageActions',
                 'downloadOldMessageFromDbAction',
                 'getNewListMessageAction',
             ]),
             reportWindowSize() {
-                !this.isMobile ?
-                    this.heightForScroll = window.innerHeight - 400 : this.heightForScroll = window.innerHeight - 325
-            },
-            onResize() {
-                this.isMobile = window.innerWidth < 766
-            },
+                setTimeout(()=>{
+                    !this.isMobile ?
+                        this.heightForScroll = window.innerHeight - 400 : this.heightForScroll = window.innerHeight - 225
+                },500)
+                           },
             checkTotalPage() {
                 if (this.chats[this.selected].messages !== undefined) {
                     if (this.chats[this.selected].currentPage === undefined) return false
@@ -292,10 +291,22 @@
             downloadOldMessage() {
                 if (this.chats[this.selected].id !== undefined) {
                     const chat = this.chats[this.selected]
+                    const messages = this.chats[this.selected].messages
+
+                    let idMessage = this.getIdLastMessage(chat.id)
+
                     if (chat.currentPage + 1 < chat.totalPage) {
+                        let page
+                        if (chat.page) {
+                            chat.page = false
+                            page = 0
+                        } else {
+                            page = chat.currentPage+1
+                        }
                         const obj = {
                             chat: chat,
-                            page: chat.currentPage + 1
+                            page: page,
+                            idMessage: idMessage - 1
                         }
                         this.isLoading = true
                         this.downloadOldMessageFromDbAction(obj).then(result => {
@@ -304,6 +315,20 @@
                             }, 1000)
                         })
                     }
+                }
+            },
+            getIdLastMessage(key) {
+                let id = this.idLastMessage.get(key)
+                if (id !== undefined) {
+                    return id
+                } else {
+                    id = this.chats[this.selected].messages[0].id
+                    const map = {
+                        key: key,
+                        value: id
+                    }
+                    this.setIdLastMessageMutation(map)
+                    return id
                 }
             },
             sendMessage(textarea) {
@@ -326,6 +351,12 @@
                     }
                     if (chat.numberOfNewMessage > 5) {
                         this.getNewListMessageAction(chat.id)
+                        const map={
+                            key: this.chats[this.selected].id,
+                            value: undefined
+                        }
+                        this.setIdLastMessageMutation(map)
+
                     }
                     return true
                 }

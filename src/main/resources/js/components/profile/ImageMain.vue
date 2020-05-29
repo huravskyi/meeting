@@ -13,7 +13,10 @@
         <div v-else>
             <div v-if="!image">
                 <div class="upload mx-auto">
-                    <v-img class="upload preview-image " ref="input" :src="getMainImage()">
+                    <v-img class="upload preview-image "
+                           ref="input"
+                           lazy-src="/favicon.ico"
+                           :src="getMainImage()">
                         <template v-slot:placeholder>
                             <v-row
                                     class="fill-height ma-0"
@@ -86,6 +89,7 @@
 </template>
 
 <script>
+    // import dd from '/js/favicon.ico'
     import UserGuest from "./imageMain/userGuest.vue"
 
     const accountPreview = ('https://firebasestorage.googleapis.com/v0/b/meeting-app-af0af.appspot.com/o/accountPreview.png?alt=media&token=8c1044c0-b371-4bf2-91e6-e0e7daf87c87')
@@ -126,12 +130,14 @@
             crop() {
                 this.overlay = true
                 if (this.overlay) {
-                    const {coordinates, canvas} = this.$refs.cropper.getResult()
-                    this.coordinates = coordinates
-                    this.image = canvas.toDataURL('image/jpeg', 0.6)
-                    this.accountPreview = this.image
-                    this.image = null
-                    this.saveImage()
+                    setTimeout(()=>{
+                        const {coordinates, canvas} = this.$refs.cropper.getResult()
+                        this.coordinates = coordinates
+                        this.image = canvas.toDataURL('image/jpeg', 0.6)
+                        this.accountPreview = this.image
+                        this.image = null
+                        this.saveImage()
+                    }, 100)
                 }
             },
             uploadImage(event) {

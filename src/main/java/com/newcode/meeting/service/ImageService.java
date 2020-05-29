@@ -30,13 +30,17 @@ public class ImageService {
     }
     private Image writeToFireBase(User user, Image newImage, Set<Image> images) throws IOException {
         String imageDataBytes = newImage.getName().substring(newImage.getName().indexOf(",") + 1);
-        byte[] decodedImageByte = Base64.getDecoder().decode(imageDataBytes);
+        byte[] decodedImageByte = new byte[0];
+        try{
+            decodedImageByte = Base64.getDecoder().decode(imageDataBytes);
+        }catch (Exception e){
+            e.fillInStackTrace();
+        }
 
         String name = RandomHelper.generatePassword(6);
         String blobName = user.getId() + "/" + name + ".jpg";
         String bucketName = "meeting-app-af0af.appspot.com";
         String keyPath = "./serviceAccountKey.json";
-        String kmsKeyName = "projects/key-project/locations/us-east1/keyRings/key-ring/cryptoKeys/gs://meeting-app-af0af.appspot.com";
         Blob blob = fireBase.getBucket().create(
                 blobName,
                 decodedImageByte,

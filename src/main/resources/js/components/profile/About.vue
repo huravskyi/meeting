@@ -4,47 +4,54 @@
     >
         <div class="mx-3" style="min-width: 280px">
 
-            <v-expansion-panels v-model="panel" >
+            <v-expansion-panels v-model="panel">
 
                 <about-me :isEditing="isEditing"
                           :description="description"
+                          :profileDetails="profileDetails"
                           v-on:close-panel="panel = $event"
                           v-if="myProfile"
                 >
                 </about-me>
                 <about-me-guest v-if="!myProfile"
                                 :description="description"
-                > </about-me-guest>
+                                :profileUserGuest="profileUserGuest"
+                ></about-me-guest>
 
 
                 <target :isEditing="isEditing"
                         :description="description"
                         v-on:close-panel="panel = $event"
+                        :profileDetails="profileDetails"
                         v-if="myProfile"
                 ></target>
                 <target-guest v-if="!myProfile"
                               :description="description"
+                              :profileUserGuest="profileUserGuest"
                 ></target-guest>
 
 
                 <look :isEditing="isEditing"
                       :description="description"
                       v-on:close-panel="panel = $event"
+                      :profileDetails="profileDetails"
                       v-if="myProfile"
                 ></look>
                 <look-guest v-if="!myProfile"
                             :description="description"
+                            :profileUserGuest="profileUserGuest"
                 >
-
                 </look-guest>
 
                 <personal-information :isEditing="isEditing"
                                       :description="description"
                                       v-on:close-panel="panel = $event"
+                                      :profileDetails="profileDetails"
                                       v-if="myProfile"
                 >
                 </personal-information>
                 <personal-information-guest :description="description"
+                                            :profileUserGuest="profileUserGuest"
                                             v-if="!myProfile"
                 >
                 </personal-information-guest>
@@ -52,12 +59,13 @@
                 <hobby :isEditing="isEditing"
                        :description="description"
                        v-on:close-panel="panel = $event"
+                       :profileDetails="profileDetails"
                        v-if="myProfile"
                 >
                 </hobby>
-                <hobby-guest  v-if="!myProfile"
-                              :description="description"
-
+                <hobby-guest v-if="!myProfile"
+                             :description="description"
+                             :profileUserGuest="profileUserGuest"
                 ></hobby-guest>
 
             </v-expansion-panels>
@@ -80,12 +88,13 @@
     import HobbyGuest from "./about/HobbyGuest.vue";
 
     export default {
-        props:['myProfile'],
+        props: ['myProfile', 'profileDetails', 'profileUserGuest'],
         name: "About",
         components: {
             HobbyGuest,
             PersonalInformationGuest,
-            LookGuest, TargetGuest, AboutMeGuest, Hobby, PersonalInformation, AboutMe, Target, Look},
+            LookGuest, TargetGuest, AboutMeGuest, Hobby, PersonalInformation, AboutMe, Target, Look
+        },
         data: () => ({
             panel: [],
             isEditing:
@@ -107,14 +116,14 @@
                 },
 
         }),
-        watch:{
-           panel(){
-               let index = 0
-               for(let key in this.isEditing){
+        watch: {
+            panel() {
+                let index = 0
+                for (let key in this.isEditing) {
                     this.isEditing[key] = index === this.panel;
-                   index ++
-               }
-           }
+                    index++
+                }
+            }
 
 
         }

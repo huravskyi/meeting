@@ -84,7 +84,7 @@ public class ChatService {
         chat.setMembers(members);
         chat.setCreationDate(LocalDateTime.now());
         chat.setUpdatedDate(LocalDateTime.now());
-        chat.setLastMessage(message.getContent().getContent());
+        chat.setLastMessage(message.getContent());
         chatRepo.save(chat);
         message.setChat(chat);
         messageRepo.save(message);

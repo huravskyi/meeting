@@ -66,7 +66,7 @@ public class UserService implements UserDetailsService {
     public void sendToMail(User user) {
         user.setActivationCode(UUID.randomUUID().toString());
         userRepo.save(user);
-        sendMessage(user, "registration");
+        sendMessage(user, "sendNewLink", null);
     }
 
     public boolean addUser(
@@ -98,7 +98,7 @@ public class UserService implements UserDetailsService {
         user.setPassword(passwordEncoder.encode(password));
 
         try {
-            sendMessage(user, "registration");
+            sendMessage(user, "registration" , password);
         } catch (MailException e) {
             return false;
         }
@@ -113,13 +113,14 @@ public class UserService implements UserDetailsService {
         return date;
     }
 
-    private void sendMessage(User user, String action) {
+    private void sendMessage(User user, String action, String password) {
         String email = null;
         String mess = null;
         switch (action) {
             case "registration":
                 email = user.getEmail();
                 mess = "Привет, %s! \n" +
+                        "Ваш пароль:" + password+"\n"+
                         "Добро пожаловать на сайт Dating World.\n  " +
                         "Пожайлуста перейдите по ссылке чтобы подтвердить профиль :  \n" +
                         domain +"/activate/" + action + "/%s";
@@ -128,6 +129,13 @@ public class UserService implements UserDetailsService {
                 email = user.getNewEmail();
                 mess = " Dating World  Привет, %s! \n" +
                         "Чтобы обновить почту перейдите по ссылке:  \n" +
+                        domain +"/activate/" + action + "/%s";
+                break;
+            case"sendNewLink":
+                email = user.getEmail();
+                mess = "Привет, %s! \n" +
+                        "Добро пожаловать на сайт Dating World.\n  " +
+                        "Пожайлуста перейдите по ссылке чтобы подтвердить профиль :  \n" +
                         domain +"/activate/" + action + "/%s";
                 break;
         }
@@ -208,7 +216,7 @@ public class UserService implements UserDetailsService {
             return new User(null);
         userFromDb.setNewEmail(newUser.getEmail());
         userFromDb.setActivationCode(UUID.randomUUID().toString());
-        sendMessage(userFromDb, "registrationNewEmail");
+        sendMessage(userFromDb, "registrationNewEmail", null);
         return userFromDb;
     }
 

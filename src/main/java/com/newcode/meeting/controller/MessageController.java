@@ -73,16 +73,18 @@ public class MessageController {
     @GetMapping("old")
     public MessagePageDto messageListOld(
             Chat chat,
+            Long idMessage,
             @PageableDefault(size = MESSAGE_PER_PAGE, sort = {"id"}, direction = Sort.Direction.DESC)
                     Pageable pageable
     ) {
-        return messageService.getOldMessageListForChat(chat, pageable);
+        return messageService.getOldMessageListForChat(chat, pageable, idMessage);
     }
 
     @JsonView(Views.IdMessage.class)
     @GetMapping("new")
     public MessagePageDto messageListNew(
             Chat chat,
+            @AuthenticationPrincipal User user,
             @PageableDefault(size = MESSAGE_PER_PAGE, sort = {"id"}, direction = Sort.Direction.DESC)
                     Pageable pageable
     ) {

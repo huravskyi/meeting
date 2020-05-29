@@ -51,6 +51,8 @@ public class MainController {
     public String main(Model model, @AuthenticationPrincipal User user) throws JsonProcessingException {
         if (user != null) {
             user = userRepo.findUserById(user.getId());
+            if(user == null)
+              return   "redirect:/login";
             String serializedProfile = profileWriter.writeValueAsString(user);
             model.addAttribute("profile", serializedProfile);
 

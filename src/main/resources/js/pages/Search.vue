@@ -1,35 +1,42 @@
 <template>
     <div>
         <v-container>
-            <v-row>
-                <v-col>
-                    <v-row style="background-color: white" class="pa-5" justify="center" align="center">
-                        <h2 class="title mr-4">Поиск</h2>
-                        <form autocomplete="off">
-                            <autocomplete-city :locale-search="localeSearch()" class="mr-4" style="width: 300px"
-                                               ref="formCity">
-                            </autocomplete-city>
-                        </form>
-                        <h2 class="title">Возрост</h2>
-                        <v-col class="px-2 pt-10">
-                            <v-range-slider
-                                    v-model="range"
-                                    :max="max"
-                                    :min="min"
-                                    hide-details
-                                    class="align-center"
-                                    thumb-label="always"
-                            >
-                            </v-range-slider>
-                        </v-col>
-                    </v-row>
-                    <v-col>
-                        <v-row justify="end">
-                            <v-btn dark color="#1976d2" large @click="getUsersSearch()"> Найти</v-btn>
+            <v-expansion-panels v-model="panel" multiple>
+                <v-expansion-panel>
+                    <v-expansion-panel-header><h2 class="title mr-4">Поиск</h2></v-expansion-panel-header>
+                    <v-expansion-panel-content>
+                        <v-row>
+                            <v-col>
+                                <v-row style="background-color: white" class="pa-5" justify="center" align="center">
+                                    <form autocomplete="off">
+                                        <autocomplete-city :locale-search="localeSearch()" class="mr-4"
+                                                           style="width: 300px"
+                                                           ref="formCity">
+                                        </autocomplete-city>
+                                    </form>
+                                    <h2 class="title">Возрост</h2>
+                                    <v-col class="px-2 pt-10">
+                                        <v-range-slider
+                                                v-model="range"
+                                                :max="max"
+                                                :min="min"
+                                                hide-details
+                                                class="align-center"
+                                                thumb-label="always"
+                                        >
+                                        </v-range-slider>
+                                    </v-col>
+                                </v-row>
+                                <v-col>
+                                    <v-row justify="end">
+                                        <v-btn dark color="#1976d2" large @click="getUsersSearch()"> Найти</v-btn>
+                                    </v-row>
+                                </v-col>
+                            </v-col>
                         </v-row>
-                    </v-col>
-                </v-col>
-            </v-row>
+                    </v-expansion-panel-content>
+                </v-expansion-panel>
+            </v-expansion-panels>
         </v-container>
         <div style="background-color: #f5f6fa">
             <v-container class="pt-12">
@@ -56,7 +63,8 @@
     import LazyLoader from "../components/pageViews/LazyLoader.vue";
     import getAge from "../util/helper/getAge";
     import AutocompleteCity from "../components/profile/AutocompleteCity.vue";
-    import getLocaleSearch from "../util/helper/getLocaleSearch";
+
+    const getFunctionLodash = () => import("../util/helper/functionLodash");
 
     export default {
         name: "Search",
@@ -67,6 +75,7 @@
             max: 70,
             range: [17, 70],
             model: '',
+            panel: [0],
         }),
         mounted() {
             if (this.stateUsers.users === undefined) setTimeout(() => this.getUsersSearch, 1000)
@@ -100,8 +109,15 @@
                     } else {
                         localeName = this.$refs.formCity.locale.name
                     }
-                    localeType = getLocaleSearch(localeName, this.$refs.formCity.entries)
+                    getFunctionLodash().then(value => {
+                        localeType = value.getLocale(localeName, this.$refs.formCity.entries)
+                        this.setParamsUserSearch(localeType, localeName, page)
+                    })
+                } else {
+                    this.setParamsUserSearch(localeType, localeName, page)
                 }
+            },
+            setParamsUserSearch(localeType, localeName, page) {
                 localStorage.setItem('locale' + this.userProfile.id, localeName)
                 if (localeName !== undefined && localeType !== undefined) {
                     if (page === undefined) page = 0
@@ -117,8 +133,9 @@
                         page
                     }
                     this.getListUsersAction(userPage)
+                    this.panel = []
                 }
-            },
+            }
         }
     }
 </script>

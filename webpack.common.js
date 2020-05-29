@@ -1,8 +1,13 @@
 const path = require('path');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const VuetifyLoaderPlugin = require('vuetify-loader/lib/plugin')
 
 module.exports = {
-    entry: path.join(__dirname, 'src', 'main', 'resources', 'js', 'main.js'),
+    entry: [
+        "core-js/modules/es6.promise",
+        "core-js/modules/es6.array.iterator",
+        path.join(__dirname, 'src', 'main', 'resources', 'js', 'main.js')
+    ],
     module: {
         rules: [
             {
@@ -25,11 +30,29 @@ module.exports = {
                     'vue-style-loader',
                     'css-loader'
                 ]
-            }
+            },
+            {
+                test: /\.s(c|a)ss$/,
+                use: [
+                    'vue-style-loader',
+                    'css-loader',
+                    {
+                        loader: 'sass-loader',
+                        options: {
+                            implementation: require('sass'),
+                            sassOptions: {
+                                fiber: require('fibers'),
+                                indentedSyntax: true // optional
+                            },
+                        },
+                    },
+                ],
+            },
         ]
     },
     plugins: [
         new VueLoaderPlugin(),
+        new VuetifyLoaderPlugin(),
     ],
     resolve: {
         modules: [

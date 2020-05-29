@@ -33,7 +33,7 @@
 
 <script>
     export default {
-        props: ['age', 'setLocalStorage'],
+        props: ['age'],
         name: "ChooseAge",
         data: () => ({
             date: '',
@@ -55,8 +55,7 @@
         methods: {
             save(date) {
                 this.$refs.menu.save(date)
-                this.setLocalStorage('date', this.date)
-
+                if (this.setLocalStorage !== undefined) this.setLocalStorage('date', this.date)
             },
             getDate() {
                 return this.calculateDate()
