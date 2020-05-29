@@ -48,7 +48,7 @@
     import UserNameAndCity from "../components/profile/UserNameAndCity.vue";
     import About from "../components/profile/About.vue";
     import ImageMain from "../components/profile/ImageMain.vue";
-    import {mapActions, mapState} from "vuex";
+    import {mapActions, mapMutations, mapState} from "vuex";
 
     export default {
         components: {
@@ -69,16 +69,19 @@
                 this.updateProfile()
             }
         },
+        mounted() {
+            if (this.isMobile)
+                this.mobileNavigationMutation(true)
+        },
         computed: {
             ...mapState({
                 profileUserGuest: state => state.storeUserGuest.userGuest,
                 profileDetails: state => state.storeProfileDetails.profileDetails,
                 isMobile: state => state.storeUserProfile.isMobile,
-
-
             }),
         },
         methods: {
+            ...mapMutations(['mobileNavigationMutation']),
             ...mapActions(['setProfileUserGuestAction']),
             async updateProfile() {
                 if (!window.location.pathname.toString().includes('my')) {

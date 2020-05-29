@@ -56,7 +56,7 @@
                 <div class="d-flex">
                     <div v-if="userProfile">
                         <div v-if="isMobile">
-                            <router-link to="/profile/my">
+                            <router-link style="text-decoration: none" to="/profile/my">
                                 <v-avatar color="indigo">
                                     <v-img v-if="userProfile.userpic"
                                            :src="userProfile.userpic"
@@ -173,7 +173,7 @@
             },
             selectItemMenu(item) {
                 if (item.to === '/logout') {
-                    location.reload()
+                    window.location.reload(true)
                 }
             },
         },

@@ -22,7 +22,7 @@
 </template>
 
 <script>
-    import {mapActions, mapState} from "vuex";
+    import {mapActions, mapMutations, mapState} from "vuex";
     import getLastVisit from "../util/helper/getLastVisit";
     import getMyAge from "../util/helper/getAge";
     import PageViewsRow from "../components/pageViews/PageViewsRow.vue";
@@ -33,6 +33,8 @@
         data: () => ({}),
         mounted() {
             this.getUsersWhoViews()
+            if (this.mobileNavigationMutation)
+                this.mobileNavigationMutation(true)
         },
         computed: {
             ...mapState({
@@ -42,6 +44,7 @@
             })
         },
         methods: {
+            ...mapMutations(['mobileNavigationMutation']),
             ...mapActions(['getUsersListAction','cleanUserViewedAction']),
             cleanUserViewed() {
                 this.cleanUserViewedAction(this.userProfile.id)

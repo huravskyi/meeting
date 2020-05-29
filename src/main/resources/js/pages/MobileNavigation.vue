@@ -93,7 +93,7 @@
             },
             selectItemMenu(item) {
                 if (item.to === '/logout') {
-                    location.reload()
+                    window.location.reload(true)
                 }
             },
             getCountNewMessages() {

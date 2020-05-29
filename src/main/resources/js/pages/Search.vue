@@ -77,10 +77,14 @@
             model: '',
             panel: [0],
         }),
+
         mounted() {
+            if (this.mobileNavigationMutation)
+            this.mobileNavigationMutation(true)
             if (this.stateUsers.users === undefined) setTimeout(() => this.getUsersSearch, 1000)
         },
         computed: {
+            ...mapMutations(['mobileNavigationMutation']),
             ...mapState({
                 userProfile: state => state.storeUserProfile.userProfile,
                 stateUsers: state => state.storeUserGuest.users

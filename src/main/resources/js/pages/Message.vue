@@ -17,30 +17,35 @@
                 >
                 </message-mobile>
                 <div v-else>
-                    <menu-message-list
-                            v-on:set-selected="selected = $event"
-                            :userProfile="userProfile"
-                            :tab="tab"
-                            :selected="selected"
-                            :chats="chats"
-                            :chatsBlock="chatsBlock"
-                            :accountPreview="accountPreview"
-                            :accountPreviewMin="accountPreviewMin"
-                    >
-                    </menu-message-list>
-                    <div>
-                        <button-menu-message :userProfile="userProfile"
-                                             :tab="tab"
-                                             :selected="selected"
-                                             :chats="chats"
-                                             :chatsBlock="chatsBlock"
-                                             v-on:set-selected="selected = $event"
-                                             v-if="selected !== undefined">
-                        </button-menu-message>
+                    <div style="position: fixed; width: 95%; z-index: 1000">
+                        <menu-message-list
+                                v-on:set-selected="selected = $event"
+                                :userProfile="userProfile"
+                                :tab="tab"
+                                :selected="selected"
+                                :chats="chats"
+                                :chatsBlock="chatsBlock"
+                                :accountPreview="accountPreview"
+                                :accountPreviewMin="accountPreviewMin"
+                        >
+                        </menu-message-list>
+                        <div>
+                            <button-menu-message :userProfile="userProfile"
+                                                 :tab="tab"
+                                                 :selected="selected"
+                                                 :chats="chats"
+                                                 :chatsBlock="chatsBlock"
+                                                 v-on:set-selected="selected = $event"
+                                                 v-if="selected !== undefined">
+                            </button-menu-message>
+                        </div>
                     </div>
 
                     <div v-if="tab !== 1" class="flex-grow-1 flex-shrink-1 flex-nowrap">
-                        <div v-if="selected !== undefined" class="d-flex justify-center ma-1">
+                        <div v-if="selected !== undefined"
+                             class="d-flex justify-center ma-1"
+                             style="padding-top: 65px"
+                        >
                             <v-tooltip bottom v-if="checkTotalPage()">
                                 <template v-slot:activator="{ on }">
                                     <v-btn icon
@@ -270,11 +275,11 @@
                 'getNewListMessageAction',
             ]),
             reportWindowSize() {
-                setTimeout(()=>{
+                setTimeout(() => {
                     !this.isMobile ?
-                        this.heightForScroll = window.innerHeight - 400 : this.heightForScroll = window.innerHeight - 225
-                },500)
-                           },
+                        this.heightForScroll = window.innerHeight - 400 : this.heightForScroll = window.innerHeight - 50
+                }, 500)
+            },
             checkTotalPage() {
                 if (this.chats[this.selected].messages !== undefined) {
                     if (this.chats[this.selected].currentPage === undefined) return false
@@ -301,7 +306,7 @@
                             chat.page = false
                             page = 0
                         } else {
-                            page = chat.currentPage+1
+                            page = chat.currentPage + 1
                         }
                         const obj = {
                             chat: chat,
@@ -351,7 +356,7 @@
                     }
                     if (chat.numberOfNewMessage > 5) {
                         this.getNewListMessageAction(chat.id)
-                        const map={
+                        const map = {
                             key: this.chats[this.selected].id,
                             value: undefined
                         }

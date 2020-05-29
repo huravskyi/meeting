@@ -94,6 +94,7 @@
     import ChooseAge from "../components/profile/ChooseAge.vue";
     import AutocompleteCity from "../components/profile/AutocompleteCity.vue";
     import ForgotPassword from "./ForgotPassword.vue";
+
     const getFunctionLodash = () => import("../util/helper/functionLodash");
 
     export default {
@@ -181,7 +182,7 @@
                     this.sendForm(res.getLocateUser(locale, entries))
                 })
             },
-            sendForm(locate){
+            sendForm(locate) {
                 let form = document.getElementById('formLogin')
                 let inputCity = document.createElement('input');
                 let inputRegion = document.createElement('input');
@@ -218,6 +219,13 @@
         background-color: white;
         padding: 25px;
         border-radius: 15px;
+        z-index: 2;
+        text-align: center;
+        color: #fff;
+        text-transform: uppercase;
+        font-family: "Roboto Slab", serif;
+        font-weight: 300;
+        font-size: 30px;
 
     }
 
@@ -232,9 +240,9 @@
             background-position: right;
         }
 
-        .form-login {
-            background-image: url("https://firebasestorage.googleapis.com/v0/b/klinicheskij-psiholog.appspot.com/o/login_backgraund.jpg?alt=media&token=cd8938ed-4508-4848-827d-9ca72221df2a");
-            background-position: 40% 20%;
-        }
+        /*.form-login {*/
+        /*    background-image: url("https://firebasestorage.googleapis.com/v0/b/klinicheskij-psiholog.appspot.com/o/login_backgraund.jpg?alt=media&token=cd8938ed-4508-4848-827d-9ca72221df2a");*/
+        /*    background-position: 40% 20%;*/
+        /*}*/
     }
 </style>

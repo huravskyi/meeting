@@ -2,8 +2,10 @@
     <div>
         <div class=" upload mx-auto">
             <v-img class="upload preview-image"
-                   :lazy-src="accountPreview_min"
-                   :src="img">
+                   lazy-src="/js/favicon.ico"
+                   :src="img"
+                   title="фото"
+            >
                 <template v-slot:placeholder>
                     <v-row
                             class="fill-height ma-0"

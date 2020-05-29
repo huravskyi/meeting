@@ -175,14 +175,14 @@
 </template>
 
 <script>
-    import {mapState, mapActions} from 'vuex'
+    import {mapState, mapActions, mapMutations} from 'vuex'
     import DialogAdmin from "../components/adminPanel/DialogAdmin.vue";
 
     export default {
         name: "Settings",
         components: {DialogAdmin},
         data: () => ({
-            timeout:2000,
+            timeout: 2000,
             modelSnackbar: false,
             textSnackbar: 'Профиль удален',
             textDialog: 'Удалить анкету?',
@@ -213,9 +213,12 @@
             }),
         },
         mounted() {
+            if (this.mobileNavigationMutation)
+                this.mobileNavigationMutation(true)
             this.email = this.userProfile.email
         },
         methods: {
+            ...mapMutations(['mobileNavigationMutation']),
             ...mapActions(['changePasswordOrEmail', 'deleteAccountAction']),
             deleteAccount() {
                 this.dialog = false
@@ -249,7 +252,7 @@
                         result => {
                             if (result) {
                                 alert("Новый пароль успешно сохранен")
-                            }else{
+                            } else {
                                 alert("Ошибка старый пароль не совпадает")
                             }
                         },

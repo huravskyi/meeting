@@ -15,8 +15,10 @@
                 <div class="upload mx-auto">
                     <v-img class="upload preview-image "
                            ref="input"
-                           lazy-src="/favicon.ico"
-                           :src="getMainImage()">
+                           lazy-src="/js/favicon.ico"
+                           :src="getMainImage()"
+                           title="фото"
+                    >
                         <template v-slot:placeholder>
                             <v-row
                                     class="fill-height ma-0"
@@ -89,9 +91,7 @@
 </template>
 
 <script>
-    // import dd from '/js/favicon.ico'
     import UserGuest from "./imageMain/userGuest.vue"
-
     const accountPreview = ('https://firebasestorage.googleapis.com/v0/b/meeting-app-af0af.appspot.com/o/accountPreview.png?alt=media&token=8c1044c0-b371-4bf2-91e6-e0e7daf87c87')
     const accountPreview_min = ('https://firebasestorage.googleapis.com/v0/b/meeting-app-af0af.appspot.com/o/accountPreview-min.png?alt=media&token=209837ce-9ee9-47a7-ab45-7ba39d551f82')
     import {Cropper, RectangleStencil} from 'vue-advanced-cropper'
@@ -104,7 +104,6 @@
         data: () => ({
             snackbar: false,
             text: '',
-
             overlay: false,
             file: '',
             coordinates: {

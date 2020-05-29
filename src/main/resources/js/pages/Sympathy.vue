@@ -70,6 +70,8 @@
             ]
         }),
         mounted() {
+            if (this.mobileNavigationMutation)
+                this.mobileNavigationMutation(true)
             setTimeout(this.setElementDisplayNone, 10)
             this.getUsersCoincidence()
             this.setProfileLikeNewMutation(null)
@@ -84,6 +86,7 @@
             }
         },
         computed: {
+            ...mapMutations(['mobileNavigationMutation']),
             ...mapState({
                 userCoincidence: state => state.storeUserGuest.userCoincidence,
                 usersLikeMy: state => state.storeUserGuest.usersLikeMy

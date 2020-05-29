@@ -1,5 +1,4 @@
 <template>
-
     <v-app app>
         <navigation v-if="mobileNavigation" :isMobile="isMobile"></navigation>
 

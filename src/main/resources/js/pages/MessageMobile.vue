@@ -21,7 +21,7 @@
                         >
                             <v-list-item-content>
                                 <v-list-item-title>
-                                    <div class="d-flex" @click="chooseMessage(item, i)">
+                                    <div class="d-flex" @click="chooseChat(item, i)">
                                         <v-icon class="pr-3" size="17">{{item.icon}}</v-icon>
                                         {{item.title}}
                                     </div>
@@ -104,7 +104,7 @@
             this.menuNameAction = this.tabTitle[this.tab].title
         },
         methods: {
-            chooseMessage(item, index) {
+            chooseChat(item, index) {
                 this.menuIconAction = item.icon
                 this.menuNameAction = item.title
                 this.open = false
