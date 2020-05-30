@@ -10,7 +10,8 @@
             </template>
         </v-expansion-panel-header>
         <p class="subtitle-1  px-6" style="opacity: 0.9" v-if="(profileDetails) && (!isEditing.target)">
-            {{profileDetails.target}}</p>
+            {{profileDetails.target+'.'}}
+        </p>
         <v-expansion-panel-content
         >
             <v-row>

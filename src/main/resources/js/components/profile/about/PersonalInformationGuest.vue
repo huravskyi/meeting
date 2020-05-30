@@ -3,7 +3,7 @@
         <v-card-title>
             <span class="title">{{description.personal}}</span>
         </v-card-title>
-        <p class="subtitle-1  px-6" style="opacity: 0.9" v-if="profileUserGuest">
+        <p class="subtitle-1  px-6" style="opacity: 0.9" v-if="profileDetailGuest">
             {{getChoice()}}
         </p>
     </v-card>
@@ -11,12 +11,21 @@
 
 <script>
     export default {
-        props: ['description', 'profileUserGuest'],
+        props: ['description', 'profileDetailGuest'],
         name: "PersonalInformationGuest",
         methods: {
             getChoice() {
-                if (this.profileUserGuest.profileDetail.personalInformation)
-                    return this.profileUserGuest.profileDetail.personalInformation.replace(/^,| , /g, "  ")
+                if (this.profileDetailGuest.personalInformation) {
+                    const model = this.profileDetailGuest.personalInformation.split(", ")
+                    let textPersonal = ''
+                    model.forEach(value => {
+                        if (value !== '') {
+                            textPersonal += value + ', '
+                        }
+                    })
+                    textPersonal = textPersonal.trim().slice(0, -1) + '.'
+                    return textPersonal
+                }
             },
         }
     }

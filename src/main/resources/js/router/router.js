@@ -13,6 +13,7 @@ import VueRouter from 'vue-router'
 // import NotFoundPage from "../pages/NotFoundPage.vue";
 // import AdminPanel from "../pages/AdminPanel.vue";
 
+
 const Login = () => import('../pages/Login.vue')
 const Registration  = () => import( '../pages/Registration.vue')
 const ForgotPassword  = () => import( '../pages/ForgotPassword.vue')
@@ -32,7 +33,6 @@ const routes = [
     {path: '/login/PreviewImage.vue.map', redirect: '/'}, // ??
     {path: '/PreviewImage.vue.map', redirect: '/'}, // ??
     {path: '/activate/registration/*', redirect: '/'}, // ??
-
     {path: '/login', component: Login},
     {path: '/registration', component: Registration},
     {path: '/login/forgotPassword', component: ForgotPassword},

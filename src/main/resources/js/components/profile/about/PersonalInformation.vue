@@ -9,7 +9,7 @@
                 </v-btn>
             </template>
         </v-expansion-panel-header>
-        <p class="subtitle-1  px-6" style="opacity: 0.9" v-if="(profileDetails) && (!isEditing.personal)">
+        <p class="subtitle-1  px-6" style="opacity: 0.9;" v-if="(profileDetails) && (!isEditing.personal)">
             {{getChoice()}}</p>
         <v-expansion-panel-content
         >
@@ -77,10 +77,11 @@
             ],
         }),
         mounted() {
-            if (this.profileDetails.personalInformation)
+            if (this.profileDetails.personalInformation) {
                 this.model = this.profileDetails.personalInformation.split(", ")
+            }
 
-            if (this.userProfile.gender ==='MALE') {
+            if (this.userProfile.gender === 'MALE') {
                 this.items[0].items = ['Свободен', 'Женат', 'Разведеный']
             } else {
                 this.items[0].items = ['Свободна', 'Замужем', 'Разведена']
@@ -95,8 +96,16 @@
         methods: {
             ...mapActions(['editAbout']),
             getChoice() {
-                if (this.profileDetails.personalInformation)
-                    return this.itemsPersonal = this.profileDetails.personalInformation.replace(/^,| , /g, "  ")
+                if (this.profileDetails.personalInformation) {
+                    let textPersonal = ''
+                    this.model.forEach(value => {
+                        if (value !== '') {
+                            textPersonal += value +', '
+                        }
+                    })
+                    textPersonal =  textPersonal.trim().slice(0, -1)+'.'
+                    return textPersonal
+                }
             },
             editing() {
                 this.isEditing.personal = !this.isEditing.personal;
@@ -104,7 +113,6 @@
             },
             save() {
                 this.isEditing.about = false
-
                 const personalInformation = this.model.join(', ')
                 if (this.profileDetails.personalInformation !== personalInformation) {
                     const obj = {

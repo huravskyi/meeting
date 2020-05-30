@@ -15,7 +15,7 @@
                 </about-me>
                 <about-me-guest v-if="!myProfile"
                                 :description="description"
-                                :profileUserGuest="profileUserGuest"
+                                :profileDetailGuest="getProfileDetailGuest"
                 ></about-me-guest>
 
 
@@ -27,7 +27,7 @@
                 ></target>
                 <target-guest v-if="!myProfile"
                               :description="description"
-                              :profileUserGuest="profileUserGuest"
+                              :profileDetailGuest="getProfileDetailGuest"
                 ></target-guest>
 
 
@@ -39,7 +39,7 @@
                 ></look>
                 <look-guest v-if="!myProfile"
                             :description="description"
-                            :profileUserGuest="profileUserGuest"
+                            :profileDetailGuest="getProfileDetailGuest"
                 >
                 </look-guest>
 
@@ -51,7 +51,7 @@
                 >
                 </personal-information>
                 <personal-information-guest :description="description"
-                                            :profileUserGuest="profileUserGuest"
+                                            :profileDetailGuest="getProfileDetailGuest"
                                             v-if="!myProfile"
                 >
                 </personal-information-guest>
@@ -65,12 +65,10 @@
                 </hobby>
                 <hobby-guest v-if="!myProfile"
                              :description="description"
-                             :profileUserGuest="profileUserGuest"
+                             :profileDetailGuest="getProfileDetailGuest"
                 ></hobby-guest>
 
             </v-expansion-panels>
-
-
         </div>
     </v-row>
 </template>
@@ -86,6 +84,7 @@
     import LookGuest from "./about/LookGuest.vue";
     import PersonalInformationGuest from "./about/PersonalInformationGuest.vue";
     import HobbyGuest from "./about/HobbyGuest.vue";
+    import {mapState} from "vuex";
 
     export default {
         props: ['myProfile', 'profileDetails', 'profileUserGuest'],
@@ -116,6 +115,13 @@
                 },
 
         }),
+        computed: {
+            getProfileDetailGuest() {
+                if (this.profileUserGuest !== null) {
+                    return this.profileUserGuest.profileDetail
+                }
+            }
+        },
         watch: {
             panel() {
                 let index = 0

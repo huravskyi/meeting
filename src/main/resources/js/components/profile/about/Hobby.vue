@@ -9,8 +9,18 @@
                 </v-btn>
             </template>
         </v-expansion-panel-header>
-        <p class="subtitle-1  px-6" style="opacity: 0.9" v-if="(profileDetails) && (!isEditing.hobby)">
-            {{profileDetails.hobby}}</p>
+        <div class="subtitle-1 d-flex flex-wrap px-6 py-2" style="opacity: 0.9" v-if="(profileDetails) && (!isEditing.hobby)">
+            <div v-for="(textChip, inx) in checkBox"
+            >
+                <v-chip :key="inx"
+                        class="ma-2"
+                        color="primary"
+                        outlined
+                >
+                    {{textChip}}
+                </v-chip>
+            </div>
+        </div>
 
         <v-expansion-panel-content
         >
@@ -49,6 +59,7 @@
 
 <script>
     import {mapActions} from 'vuex'
+
     export default {
         props: ['isEditing', 'description', 'profileDetails'],
         name: "Hobby",
@@ -109,6 +120,7 @@
     .colCheckBox {
         height: 40px;
     }
+
     .headerHeight {
         min-height: 90px;
     }

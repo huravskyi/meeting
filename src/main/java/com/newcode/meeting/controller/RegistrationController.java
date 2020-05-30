@@ -25,16 +25,20 @@ public class RegistrationController {
     }
 
     @GetMapping("/login")
-    public String login(Model model){
+    public String login(Model model, @AuthenticationPrincipal User user) {
         helper(model);
-        return "index";
+        if (user != null) {
+            return "redirect:/";
+        } else {
+            return "index";
+        }
     }
 
     @PostMapping("/login/forgotPassword")
     public String forgotPassword(
             Model model,
             @RequestParam("email") String email
-    ){
+    ) {
         if (userService.passwordReset(email)) {
             helper(model);
             return "redirect:/login/forgotPassword?success";
@@ -44,7 +48,7 @@ public class RegistrationController {
     }
 
     @GetMapping("/login/forgotPassword")
-    public String getUserForgotPassword(Model model){
+    public String getUserForgotPassword(Model model) {
         helper(model);
         return "index";
     }
@@ -74,9 +78,13 @@ public class RegistrationController {
     }
 
     @GetMapping("/registration")
-    public String get(Model model){
+    public String get(Model model, @AuthenticationPrincipal User user) {
         helper(model);
-        return "index";
+        if (user != null) {
+            return "redirect:/";
+        } else {
+            return "index";
+        }
     }
 
     @JsonView(Views.FullProfile.class)
@@ -98,7 +106,7 @@ public class RegistrationController {
     public String activate(
             Model model,
             @PathVariable String code
-    ){
+    ) {
         boolean isActivation = userService.isActivationUser(code);
         helper(model);
         if (isActivation) {
@@ -108,7 +116,7 @@ public class RegistrationController {
         }
     }
 
-    private void helper(Model model)  {
+    private void helper(Model model) {
         model.addAttribute("profile", "null");
         model.addAttribute("chats", "null");
         model.addAttribute("chatsBlock", "null");

@@ -5,7 +5,8 @@
         >
             <v-layout align-center justify-space-around row fill-height>
                 <v-toolbar-title class="font-weight-bold font-italic">
-                    <router-link to="/" title="На главную" style="text-decoration: none">Dating World&ensp;
+                    <router-link  :to="userProfile?'/':'/login'" title="На главную" style="text-decoration: none">
+                        Dating World&ensp;
                     </router-link>
                 </v-toolbar-title>
 
@@ -173,7 +174,8 @@
             },
             selectItemMenu(item) {
                 if (item.to === '/logout') {
-                    window.location.reload(true)
+                    this.$http.get('/logout')
+                    setTimeout(()=>{window.location.reload()})
                 }
             },
         },

@@ -7,11 +7,9 @@ import VueResource from 'vue-resource'
 import App from '../js/pages/App.vue'
 import router from '../js/router/router'
 import vuetify from '../js/plugins/vuetify'
-import {Cropper} from 'vue-advanced-cropper'
 
 
 Vue.use(VueResource)
-Vue.component(Cropper)
 
 if (userProfile)
     setTimeout(()=>{

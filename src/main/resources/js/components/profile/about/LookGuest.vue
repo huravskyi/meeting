@@ -3,7 +3,7 @@
         <v-card-title>
             <span class="title">{{description.look}}</span>
         </v-card-title>
-        <p class="subtitle-1  px-6" style="opacity: 0.9" v-if="profileUserGuest">
+        <p class="subtitle-1  px-6" style="opacity: 0.9" v-if="profileDetailGuest">
             {{getLook()}}
         </p>
     </v-card>
@@ -11,7 +11,7 @@
 
 <script>
     export default {
-        props: ['description', 'profileUserGuest'],
+        props: ['description', 'profileDetailGuest'],
         name: "LookGuest",
         model: [],
         data: () => ({
@@ -42,13 +42,13 @@
         }),
         methods: {
             getLook() {
-                this.model = JSON.parse(JSON.stringify(this.profileUserGuest.profileDetail.look))
+                this.model = JSON.parse(JSON.stringify(this.profileDetailGuest.look))
 
                 let look = ''
                 let tmp = 0
-                for (let key in this.profileUserGuest.profileDetail.look) {
+                for (let key in this.profileDetailGuest.look) {
                     if (key !== 'height' && key !== 'weight') {
-                        let index = this.getIndex(this.profileUserGuest.profileDetail.look[key], tmp)
+                        let index = this.getIndex(this.profileDetailGuest.look[key], tmp)
                         if (index !== -1) {
                             look += this.looksBuild[tmp].title + ' ' + this.looksBuild[tmp].items[index] + ', '
                         }
@@ -61,7 +61,7 @@
                     }
                     tmp++
                 }
-                return look
+                return look.trim().slice(0, -1) + '.'
             },
             getIndex(item, ind) {
                 return this.looks[ind].items.findIndex(i => i === item)

@@ -8,14 +8,16 @@
             >
                 <v-toolbar-title class="font-weight-light">
                     <div class="d-flex pt-2 flex-column align-center flex-wrap">
-                        <div class="d-flex">
-                            <div class="headline">{{profileUserGuest.username}},</div>
-                            <div class="headline px-1 isOnline pr-8"
-                                 :style="'color:'+`${profileUserGuest.online? '#21ff0b': '#ffac32'}`"
-                            >
-                                <span style="color: black">{{getAge(profileUserGuest.birthDate)}}</span>
-                            </div>
-
+                        <div class="d-flex headline">
+                            <v-badge class="ma-auto mr-10"
+                                    :color="`${profileUserGuest.online? '#21ff0b': '#ffac32'}`"
+                                    dot
+                                    offset-x="-3"
+                                    overlap>
+                                <div>
+                                    {{profileUserGuest.username + ', ' + getAge(profileUserGuest.birthDate)}}
+                                </div>
+                            </v-badge>
                             <liked-button v-if="!isMobile"
                                           :class-button="''"
                                           :outlined="true"
@@ -254,22 +256,4 @@
     .editButton {
         width: fit-content;
     }
-
-    .isOnline {
-        font-size: 18px;
-        line-height: 18px;
-        position: relative;
-    }
-
-    .isOnline::before {
-        content: "\2022";
-        font-size: 46px;
-        font-weight: 800;
-        left: 29px;
-        line-height: 18px;
-        position: absolute;
-        top: -3px;
-    }
-
-
 </style>

@@ -11,10 +11,9 @@
         </div>
 
         <div v-else>
-            <div v-if="!image">
+            <div v-if="!imageCropper">
                 <div class="upload mx-auto">
-                    <v-img class="upload preview-image "
-                           ref="input"
+                    <v-img class="upload preview-image"
                            lazy-src="/js/favicon.ico"
                            :src="getMainImage()"
                            title="фото"
@@ -39,18 +38,18 @@
                     </button>
                 </div>
             </div>
-            <div v-else>
+            <div v-else-if="!image">
                 <div>
-                    <v-btn icon @click="image = null">
+                    <v-btn icon @click="imageCropper = null ">
                         <v-icon size="40">mdi-close</v-icon>
                     </v-btn>
                 </div>
                 <div class="upload">
                     <Cropper
                             class="upload-example-cropper"
-                            :src="image"
+                            :src="imageCropper"
                             ref="cropper"
-                            :stencilProps="{
+                            :stencil-props="{
         	                                   	minAspectRatio: 10/10,
         	                                 	maxAspectRatio: 10/10
                                                	}"
@@ -58,11 +57,29 @@
                 </div>
                 <div class="button-wrapper ">
                     <button class="button" @click="crop">
-                        <input type="file" name="file" id="file" ref="file" hidden/>
-                        Сохранить
+                        Обрезать
                     </button>
                 </div>
             </div>
+            <div v-else>
+                <div>
+                    <v-btn icon @click="imageCropper = null, image = null ">
+                        <v-icon size="40">mdi-close</v-icon>
+                    </v-btn>
+                </div>
+                <div class=" mx-auto">
+                    <v-img class="upload"
+                           :src="image"
+                    >
+                    </v-img>
+                    <div class="button-wrapper ">
+                        <button class="button" @click="saveImage()">
+                            Сохранить
+                        </button>
+                    </div>
+                </div>
+            </div>
+
             <div class="text-center">
                 <v-snackbar class="text-center"
                             v-model="snackbar"
@@ -92,6 +109,7 @@
 
 <script>
     import UserGuest from "./imageMain/userGuest.vue"
+
     const accountPreview = ('https://firebasestorage.googleapis.com/v0/b/meeting-app-af0af.appspot.com/o/accountPreview.png?alt=media&token=8c1044c0-b371-4bf2-91e6-e0e7daf87c87')
     const accountPreview_min = ('https://firebasestorage.googleapis.com/v0/b/meeting-app-af0af.appspot.com/o/accountPreview-min.png?alt=media&token=209837ce-9ee9-47a7-ab45-7ba39d551f82')
     import {Cropper, RectangleStencil} from 'vue-advanced-cropper'
@@ -113,6 +131,7 @@
                 top: 0
             },
             image: null,
+            imageCropper: null,
             img: accountPreview,
             accountPreview: accountPreview,
             accountPreview_min: accountPreview_min,
@@ -129,31 +148,33 @@
             crop() {
                 this.overlay = true
                 if (this.overlay) {
-                    setTimeout(()=>{
+                    setTimeout(() => {
                         const {coordinates, canvas} = this.$refs.cropper.getResult()
                         this.coordinates = coordinates
                         this.image = canvas.toDataURL('image/jpeg', 0.6)
-                        this.accountPreview = this.image
-                        this.image = null
-                        this.saveImage()
+                        this.overlay = false
                     }, 100)
                 }
             },
             uploadImage(event) {
-                let input = event.target;
-                if (input.files && input.files[0]) {
-                    if (input.files[0].size < 2000) {
-                        return this.setAlert(true)
-                    }else if(input.files[0].size > 5500000){
-                        return this.setAlert(false)
-                    } else {
-                        let reader = new FileReader()
-                        reader.onload = (e) => {
-                            this.image = e.target.result
+                this.overlay = true
+                setTimeout(() => {
+                    let input = event.target;
+                    if (input.files && input.files[0]) {
+                        if (input.files[0].size < 2000) {
+                            return this.setAlert(true)
+                        } else if (input.files[0].size > 5500000) {
+                            return this.setAlert(false)
+                        } else {
+                            let reader = new FileReader()
+                            reader.onload = (e) => {
+                                this.imageCropper = e.target.result
+                            }
+                            reader.readAsDataURL(input.files[0])
                         }
-                        reader.readAsDataURL(input.files[0])
                     }
-                }
+                    this.overlay = false
+                },100)
             },
             getMainImage() {
                 if (!this.myProfile) {
@@ -173,20 +194,25 @@
                 }
             },
             saveImage() {
-                const image = {
-                    name: this.accountPreview
-                }
-                let answer = this.addImageAction(image)
-                answer.then(
-                    result => {
-
-                        result ? this.successImage() : this.failureImage()
-                    },
-                    error => {
-                        this.overlay = false
-                        alert("Rejected: " + error)
+                this.overlay = true
+                setTimeout(()=>{
+                    const image = {
+                        name: this.image
                     }
-                )
+                    let answer = this.addImageAction(image)
+                    answer.then(
+                        result => {
+
+                            result ? this.successImage() : this.failureImage()
+                        },
+                        error => {
+                            this.overlay = false
+                            alert("Rejected: " + error)
+                        }
+                    )
+                    this.image = null
+                    this.imageCropper = null
+                },100)
             },
             successImage() {
                 this.overlay = false
@@ -200,7 +226,7 @@
             },
             setAlert(event) {
                 this.snackbar = true
-                event?this.text = 'Фотография должна быть больше 2KB':this.text = 'Фотография не должна быть больше 5MB'
+                event ? this.text = 'Фотография должна быть больше 2KB' : this.text = 'Фотография не должна быть больше 5MB'
             }
         }
     }

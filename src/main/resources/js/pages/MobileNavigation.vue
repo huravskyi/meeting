@@ -93,7 +93,8 @@
             },
             selectItemMenu(item) {
                 if (item.to === '/logout') {
-                    window.location.reload(true)
+                    this.$http.get('/logout')
+                    setTimeout(()=>{window.location.reload()})
                 }
             },
             getCountNewMessages() {
