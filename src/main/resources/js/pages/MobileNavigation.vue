@@ -36,8 +36,6 @@
                 <v-icon>mail</v-icon>
             </v-badge>
         </v-btn>
-
-
         <v-btn min-width="60"
                to="/views"
         >
@@ -70,6 +68,8 @@
 </template>
 
 <script>
+    import {mapMutations} from "vuex";
+
     export default {
         props: {
             chats: Array,
@@ -87,6 +87,7 @@
         }),
 
         methods: {
+            ...mapMutations(['logoutUserMutation']),
             getNewLike() {
                 this.userProfile.likeNew === 1 ? this.badgeValue = true : this.badgeValue = false
                 return true
@@ -94,7 +95,7 @@
             selectItemMenu(item) {
                 if (item.to === '/logout') {
                     this.$http.get('/logout')
-                    setTimeout(()=>{window.location.reload()})
+                    this.logoutUserMutation(null)
                 }
             },
             getCountNewMessages() {

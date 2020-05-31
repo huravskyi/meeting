@@ -10,6 +10,9 @@ export default {
     },
 
     mutations: {
+        logoutUserMutation(state, user){
+            state.userProfile = user
+        },
         setIsMobileMutation(state, isMobile){
             state.isMobile = isMobile
         },

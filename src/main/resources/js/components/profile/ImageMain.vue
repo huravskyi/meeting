@@ -34,7 +34,7 @@
                     <button class="button" @click="$refs.file.click()">
                         <input type="file" hidden
                                ref="file" @change="uploadImage($event)" accept="image/*"/>
-                        Загрузить фотографию
+                        {{textInvitation}}
                     </button>
                 </div>
             </div>
@@ -102,7 +102,6 @@
                     </v-progress-circular>
                 </v-overlay>
             </div>
-
         </div>
     </div>
 </template>
@@ -135,6 +134,7 @@
             img: accountPreview,
             accountPreview: accountPreview,
             accountPreview_min: accountPreview_min,
+            textInvitation: 'Загрузить фотографию',
         }),
 
         computed: {
@@ -174,9 +174,10 @@
                         }
                     }
                     this.overlay = false
-                },100)
+                }, 100)
             },
             getMainImage() {
+                this.textInvitation = this.images.length > 0?'Загрузить еще фотографию':'Загрузить фотографию'
                 if (!this.myProfile) {
                     const image = this.profileUserGuest.userpic
                     if (image !== null) {
@@ -195,7 +196,7 @@
             },
             saveImage() {
                 this.overlay = true
-                setTimeout(()=>{
+                setTimeout(() => {
                     const image = {
                         name: this.image
                     }
@@ -212,7 +213,7 @@
                     )
                     this.image = null
                     this.imageCropper = null
-                },100)
+                }, 100)
             },
             successImage() {
                 this.overlay = false

@@ -182,7 +182,7 @@
                     }
                     tmp++
                 }
-                return look.trim().slice(0, -1) + '.'
+                return  look!==''? look.trim().slice(0, -1) + '.':''
             },
             getIndex(item, ind) {
                 return this.looks[ind].items.findIndex(i => i === item)

@@ -10,7 +10,7 @@
             </template>
         </v-expansion-panel-header>
         <p class="subtitle-1  px-6" style="opacity: 0.9" v-if="(profileDetails) && (!isEditing.target)">
-            {{profileDetails.target+'.'}}
+            {{profileDetails.target !==null?profileDetails.target +'.':''}}
         </p>
         <v-expansion-panel-content
         >
@@ -23,7 +23,7 @@
                        class="colCheckBox"
                 >
                     <div style="width: 250px">
-                        <v-checkbox  v-model="checkBox" :value="item.value">
+                        <v-checkbox v-model="checkBox" :value="item.value">
                             <template v-slot:label>
                                 <div class="check-box-custom">
                                     <span class="font-weight-regular">{{item.value}}</span>

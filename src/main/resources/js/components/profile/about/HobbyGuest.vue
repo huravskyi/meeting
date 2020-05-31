@@ -28,7 +28,7 @@
         computed: {
             getCheckBox() {
                 if (this.profileDetailGuest)
-                return this.checkBox = this.profileDetailGuest.hobby.split(", ")
+                return this.checkBox =this.profileDetailGuest.hobby!==null? this.profileDetailGuest.hobby.split(", "):[]
             }
         },
     }

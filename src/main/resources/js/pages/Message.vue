@@ -277,7 +277,7 @@
             reportWindowSize() {
                 setTimeout(() => {
                     !this.isMobile ?
-                        this.heightForScroll = window.innerHeight - 400 : this.heightForScroll = window.innerHeight - 50
+                        this.heightForScroll = window.innerHeight - 400 : this.heightForScroll = window.innerHeight - 200
                 }, 500)
             },
             checkTotalPage() {

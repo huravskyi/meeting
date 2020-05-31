@@ -123,7 +123,7 @@
 </template>
 
 <script>
-    import {mapState, mapActions} from 'vuex'
+    import {mapState, mapActions, mapMutations} from 'vuex'
 
     export default {
         props: ['isMobile'],
@@ -153,6 +153,7 @@
             ],
         }),
         methods: {
+            ...mapMutations(['logoutUserMutation']),
             ...mapActions(['updateChatsAction', 'getBlockChatAction']),
 
             getNewLike() {
@@ -175,7 +176,7 @@
             selectItemMenu(item) {
                 if (item.to === '/logout') {
                     this.$http.get('/logout')
-                    setTimeout(()=>{window.location.reload()})
+                    this.logoutUserMutation(null)
                 }
             },
         },

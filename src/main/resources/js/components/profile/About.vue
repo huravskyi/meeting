@@ -2,7 +2,7 @@
     <v-row align="center"
            justify="end"
     >
-        <div class="mx-3" style="min-width: 280px">
+        <div class="mx-3" style="width: 100%">
 
             <v-expansion-panels v-model="panel">
 
@@ -29,7 +29,6 @@
                               :description="description"
                               :profileDetailGuest="getProfileDetailGuest"
                 ></target-guest>
-
 
                 <look :isEditing="isEditing"
                       :description="description"

@@ -85,7 +85,7 @@
         }),
         mounted() {
             if (this.profileDetails.hobby) {
-                this.checkBox = this.profileDetails.hobby.split(", ")
+                return this.checkBox =this.profileDetails.hobby!==null? this.profileDetails.hobby.split(", "):[]
             }
         },
         methods: {
