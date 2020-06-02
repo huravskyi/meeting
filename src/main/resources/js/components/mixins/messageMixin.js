@@ -45,7 +45,14 @@ export const messageMethods = {
             }
         },
     },
+    beforeDestroy() {
+        if (typeof window !== 'undefined') {
+            window.removeEventListener('resize', this.reportWindowSize)
+        }
+    },
     mounted() {
+        window.addEventListener('resize', this.reportWindowSize);
+        this.reportWindowSize()
         this.getMessages()
         this.tab = this.tabVuex
     },

@@ -179,7 +179,6 @@
                 }
             },
         },
-
         watch: {
             '$route'(val) {
                 if (this.$route.path.includes('message')) {

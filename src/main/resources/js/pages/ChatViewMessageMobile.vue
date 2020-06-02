@@ -37,7 +37,7 @@
                     <span>Загрузить больше сообщений</span>
                 </v-tooltip>
             </div>
-            <list-messages
+            <list-messages style="border: 3px double #0a70ff "
                     :chatBlock="chatsBlock"
                     :chats="chats"
                     :selected="selected"
@@ -68,7 +68,7 @@
 
     export default {
         components: {EntryField, ListMessages, ButtonMenuMessage, MenuMessageList},
-        name: "ChatViewMessage",
+        name: "ChatViewMessageMobile",
         mixins: [messageMethods],
         data: () => ({
             isLoading: false,
@@ -84,7 +84,8 @@
             reportWindowSize() {
                 setTimeout(() => {
                     this.heightForScroll = window.innerHeight - 240
-                }, 500)
+                }, 200)
+
             },
             setSelected() {
                 setTimeout(() => {
@@ -93,7 +94,7 @@
                 this.tab = Number(this.$route.query.tab)
                 const id = Number(this.$route.params.id)
 
-                if(this.$route.query.selected ===undefined){
+                if (this.$route.query.selected === undefined) {
                     if (this.tab === 0) {
                         this.selected = this.chats.findIndex(chat => chat.id === id)
                     } else {

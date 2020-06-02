@@ -171,15 +171,6 @@
                 Vue.set(this.tabTitle[1], 'content', this.chatsBlock)
             }
         },
-        beforeDestroy() {
-            if (typeof window !== 'undefined') {
-                window.removeEventListener('resize', this.reportWindowSize)
-            }
-        },
-        mounted() {
-            window.addEventListener('resize', this.reportWindowSize);
-            this.reportWindowSize()
-        },
         methods: {
             reportWindowSize() {
                 setTimeout(() => {
@@ -188,7 +179,6 @@
                 }, 200)
 
             },
-
             setSelected(item) {
                 if (item.title === 'Заблокированные') {
                     if (this.$route.query.selected) this.$router.push('message')
