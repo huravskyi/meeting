@@ -8,7 +8,6 @@ import App from '../js/pages/App.vue'
 import router from '../js/router/router'
 import vuetify from '../js/plugins/vuetify'
 
-
 Vue.use(VueResource)
 
 if (userProfile)

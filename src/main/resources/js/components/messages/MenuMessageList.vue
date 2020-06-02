@@ -31,7 +31,7 @@
     import {mapMutations} from "vuex";
 
     export default {
-        props: ['tab', 'selected', 'chats', 'chatsBlock', 'userProfile', 'accountPreview', 'accountPreviewMin'],
+        props: ['tab', 'selected', 'chats', 'userProfile', 'accountPreview', 'accountPreviewMin'],
         name: "MenuMessageList",
         data: () => ({
             user: '',
@@ -43,6 +43,7 @@
             ...mapMutations(['mobileNavigationMutation']),
             setSelectAndMobileNavigation(){
                 this.$emit('set-selected', undefined)
+                this.$router.go(-1)
                 this.mobileNavigationMutation(true)
             },
             getAge(data){

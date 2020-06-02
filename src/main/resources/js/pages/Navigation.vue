@@ -5,7 +5,7 @@
         >
             <v-layout align-center justify-space-around row fill-height>
                 <v-toolbar-title class="font-weight-bold font-italic">
-                    <router-link  :to="userProfile?'/':'/login'" title="На главную" style="text-decoration: none">
+                    <router-link :to="userProfile?'/':'/login'" title="На главную" style="text-decoration: none">
                         Dating World&ensp;
                     </router-link>
                 </v-toolbar-title>
@@ -129,7 +129,6 @@
         props: ['isMobile'],
         name: "Navigation",
         data: () => ({
-            logout: 'Войти',
             value: '',
             numberNewMessage: 0,
             show: false,
@@ -231,10 +230,9 @@
             },
             defineExtended() {
                 if (window.innerWidth < 350) return 90
-
             },
             getPath() {
-                return this.$route.path !== '/login';
+                return this.$route.path === '/registration';
             },
         },
     }

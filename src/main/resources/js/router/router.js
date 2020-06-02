@@ -12,6 +12,7 @@ import VueRouter from 'vue-router'
 // import Sympathy from "../pages/Sympathy.vue";
 // import NotFoundPage from "../pages/NotFoundPage.vue";
 // import AdminPanel from "../pages/AdminPanel.vue";
+// import ChatViewMessage from "../pages/ChatViewMessage.vue";
 
 
 const Login = () => import('../pages/Login.vue')
@@ -25,6 +26,7 @@ const PageViews  = () => import( "../pages/PageViews.vue")
 const Sympathy  = () => import( "../pages/Sympathy.vue")
 const NotFoundPage  = () => import( "../pages/NotFoundPage.vue")
 const AdminPanel  = () => import( "../pages/AdminPanel.vue")
+const ChatViewMessage  = () => import( "../pages/ChatViewMessage.vue")
 
 Vue.use(VueRouter);
 
@@ -41,6 +43,7 @@ const routes = [
     {path: '/settings', component: Settings},
     {path: '/search', component: Search},
     {path: '/message', component: Message},
+    {path: '/message/:id?', component: ChatViewMessage, props: true},
     {path: '/views', component: PageViews},
     {path: '/sympathy', component: Sympathy},
     {path: '/admin', component: AdminPanel},

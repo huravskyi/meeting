@@ -47,7 +47,16 @@
             disabledSendMail: false,
             time: '',
         }),
-
+        watch: {
+            '$route'(val) {
+                if (this.isMobile)
+                    if (val.query.tab === undefined) {
+                        this.mobileNavigationMutation(true)
+                    }else {
+                        this.mobileNavigationMutation(false)
+                    }
+            }
+        },
         beforeDestroy() {
             if (typeof window !== 'undefined') {
                 window.removeEventListener('resize', this.onResize, {passive: true})
@@ -68,7 +77,9 @@
         },
 
         methods: {
-            ...mapMutations(['setProfileLikeNewMutation',
+            ...mapMutations([
+                'mobileNavigationMutation',
+                'setProfileLikeNewMutation',
                 'addMessageSocketMutation',
                 'updateDeliveredAllMessageMutation',
                 'updateDeliveredOneMessageMutation',

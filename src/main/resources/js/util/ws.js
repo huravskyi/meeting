@@ -16,6 +16,13 @@ export function connect() {
     };
     stompClient.activate();
     stompClient.debug = function(str) {};
+
+    stompClient.onWebSocketClose = function(frame) {
+        onWebSocketClose(frame)
+    };
+}
+function onWebSocketClose(frame) {
+    window.location.reload()
 }
 
 export function addHandler(handler) {
@@ -32,7 +39,3 @@ export function disconnect() {
         stompClient.disconnect()
     }
 }
-
-// export function sendMessage(message) {
-//     stompClient.publish({destination: "/app/changeMessage", body: JSON.stringify(message)})
-// }

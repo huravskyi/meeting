@@ -56,25 +56,34 @@
                 </v-row>
             </div>
         </v-row>
-        <v-list two-line-line>
-            <v-list-item-group
-                    v-model="selectedGroup"
-                    active-class="blue--text"
+        <v-container
+                style="min-height: 50px; "
+                class="overflow-y-auto ma-0"
+        >
+            <v-row class="list-users"
+                   :style="'height:'+heightForScroll+'px'"
             >
-                <list-users
-                        :userName="name"
-                        :isMobile="isMobile"
-                        :nameUser="name"
-                        :list="tabTitle[tab]"
-                        :chats="chats"
-                        :tab="tab"
-                        :chatsBlock="chatsBlock"
-                        :accountPreview="accountPreview"
-                        :accountPreviewMin="accountPreviewMin"
-                >
-                </list-users>
-            </v-list-item-group>
-        </v-list>
+                <v-list two-line-line  style="width: 100%" >
+                    <v-list-item-group
+                            v-model="selectedGroup"
+                            active-class="blue--text"
+                    >
+                        <list-users
+                                :userName="name"
+                                :isMobile="isMobile"
+                                :nameUser="name"
+                                :list="tabTitle[tab]"
+                                :chats="chats"
+                                :tab="tab"
+                                :chatsBlock="chatsBlock"
+                                :accountPreview="accountPreview"
+                                :accountPreviewMin="accountPreviewMin"
+                        >
+                        </list-users>
+                    </v-list-item-group>
+                </v-list>
+            </v-row>
+        </v-container>
     </div>
 </template>
 
@@ -83,30 +92,31 @@
 
     export default {
         components: {ListUsers},
-        props: ['chats', 'userProfile', 'tab', 'chatsBlock', 'tabTitle', 'isMobile', 'accountPreviewMin', 'accountPreview'],
+        props: ['heightForScroll', 'chats', 'userProfile', 'tab', 'chatsBlock', 'tabTitle', 'isMobile', 'accountPreviewMin', 'accountPreview'],
         name: "MessageMobile",
         data: () => ({
             selectedGroup: undefined,
             name: '',
             displayMenuNameAction: 'flex',
             displayBackspace: 'none',
-            menuIconAction: '',
-            menuNameAction: '',
             open: false,
+            selected:undefined,
         }),
-        watch:{
-            selectedGroup(val){
+        watch: {
+            selectedGroup(val) {
                 this.$emit('set-selected', this.selectedGroup)
             }
         },
-        mounted() {
-            this.menuIconAction = this.tabTitle[this.tab].icon
-            this.menuNameAction = this.tabTitle[this.tab].title
+        computed:{
+            menuIconAction(){
+                return this.tabTitle[this.tab].icon
+            },
+            menuNameAction(){
+                return this.tabTitle[this.tab].title
+            }
         },
         methods: {
             chooseChat(item, index) {
-                this.menuIconAction = item.icon
-                this.menuNameAction = item.title
                 this.open = false
                 this.$emit('set-tab', index)
             }

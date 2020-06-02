@@ -3,7 +3,6 @@
         <div v-if="!myProfile">
             <user-guest v-if="profileUserGuest"
                         :img="getMainImage()"
-                        :isMobile="isMobile"
                         :profileUserGuest="profileUserGuest"
                         :accountPreview_min="accountPreview_min"
             >

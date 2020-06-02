@@ -3,7 +3,7 @@
         <v-row class="flex-nowrap">
 
             <v-container id="scrollElement"
-                         style="min-height: 50px;  "
+                         style="min-height: 50px;"
                          class="overflow-y-auto ma-0"
             >
                 <v-row v-scroll

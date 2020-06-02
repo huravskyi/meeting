@@ -44,7 +44,7 @@
                 <v-divider vertical dark></v-divider>
                 <v-spacer></v-spacer>
                 <div>
-                    <router-link to="/message?selected=0">
+                    <router-link :to="getPath">
                         <v-btn text
                                icon
                                class="white--text"
@@ -88,61 +88,23 @@
     const accountPreview = ('https://firebasestorage.googleapis.com/v0/b/meeting-app-af0af.appspot.com/o/accountPreview.png?alt=media&token=8c1044c0-b371-4bf2-91e6-e0e7daf87c87')
 
     import LikedButton from "../profile/LikedButton.vue";
-    import {mapMutations, mapState} from "vuex";
+    import {writeNewMessage} from "../mixins/writeNewMessageMixin";
 
     export default {
         components: {LikedButton},
         props: ['user', 'userProfile'],
         name: "CardView",
+        mixins:[writeNewMessage],
         data: () => ({
             accountPreviewMin,
             accountPreview,
         }),
-        computed: {
-            ...mapState({
-                chats: state => state.storeMessages.chats,
-                isMobile: state => state.storeUserProfile.isMobile,
-            }),
-        },
-        methods: {
-            ...mapMutations(['writeNewMessageAndNewChatMutation', 'setToUpChatMutation', 'mobileNavigationMutation']),
+        methods:{
             getMainImage(user) {
                 return user.userpic ? user.userpic : this.accountPreview
             },
             getAge(date) {
                 return getAge(date)
-            },
-            checkMessage(userTo) {
-                if (this.chats) {
-                    for (let i = 0; i < this.chats.length; i++) {
-                        for (let y = 0; y < this.chats[i].members.length; y++) {
-                            if (this.chats[i].members[y].id === userTo.id) {
-                                return i
-                                break
-                            }
-                        }
-                    }
-                    return undefined
-                } else {
-                    return undefined
-                }
-            },
-            writeNewMessage(userTo) {
-                let index = this.checkMessage(userTo)
-                const userFrom = this.userProfile
-                if (index === undefined) {
-                    const chat = {
-                        members: [userTo, userFrom],
-                        messages: [],
-                        numberOfNewMessage: 0
-                    }
-                    this.writeNewMessageAndNewChatMutation(chat)
-                }else {
-                    this.setToUpChatMutation(index)
-                }
-                if (this.isMobile){
-                    this.mobileNavigationMutation(false)
-                }
             },
         }
     }

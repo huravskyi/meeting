@@ -5,7 +5,9 @@
                 flat
         >
             <template v-for="(item, index) in list.content?list.content:[]">
-                <v-list-item :key="index">
+                <v-list-item :key="index"
+                             :to="isMobile?getPath(item):''"
+                >
                     <v-list-item-icon class="mr-3">
                         <router-link :to="/profile/+ `${getUser(item).id}`">
                             <v-badge color="pink"
@@ -25,7 +27,8 @@
                                                 justify="center"
                                         >
                                             <v-progress-circular indeterminate
-                                                                 color="grey lighten-5"></v-progress-circular>
+                                                                 color="grey lighten-5">
+                                            </v-progress-circular>
                                         </v-row>
                                     </template>
                                 </v-img>
@@ -33,7 +36,7 @@
                         </router-link>
                     </v-list-item-icon>
 
-                    <v-list-item-content @click="hideMobileNavigation()">
+                    <v-list-item-content @click="hideMobileNavigation(item)">
                         <v-list-item-title>
                             <v-badge
                                     :color="`${getUser(item).isOnline? '#21ff0b': '#ffac32'}`"
@@ -61,7 +64,6 @@
         </v-card>
         <audio id="audio">
             <source :src="sms"></source>
-            Your browser isn't invited for super fun audio time.
         </audio>
     </div>
 </template>
@@ -93,6 +95,9 @@
         },
         methods: {
             ...mapMutations(['mobileNavigationMutation']),
+            getPath(item) {
+                return {path:'/message/' + item.id, query:{tab:this.tab}}
+            },
             hideMobileNavigation() {
                 if (this.isMobile) {
                     this.mobileNavigationMutation(false)

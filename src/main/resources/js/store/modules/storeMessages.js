@@ -14,9 +14,13 @@ export default {
         messageIdList: new Set(),
         blockAction: false,
         mobileNavigation:true,
-        idLastMessage:new Map()
+        idLastMessage:new Map(),
+        tabVuex:0,
     },
     mutations: {
+        setTabMutation(state, tab){
+            state.tabVuex = tab
+        },
         setIdLastMessageMutation(state, map){
             state.idLastMessage.set(map.key, map.value)
         },

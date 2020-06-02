@@ -53,6 +53,7 @@
             onClick(item) {
                 const index = JSON.parse(JSON.stringify(this.selected))
                 this.$emit('set-selected', undefined);
+                this.$router.replace('/message')
                 if (window.location.search.toString().includes('selected')) this.$router.push('message')
                 if (item.click === 'block') {
                     const chatAction = {

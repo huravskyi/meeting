@@ -19,7 +19,7 @@
             </v-img>
         </div>
         <div class="button-wrapper">
-            <router-link to="/message?selected=0">
+            <router-link :to="getPath">
                 <v-btn class="button"
                        color="#0a70ff"
                        dark
@@ -46,51 +46,19 @@
 </template>
 
 <script>
-    import {mapMutations, mapState} from "vuex";
+    import {mapState} from "vuex";
     import LikedButton from "../LikedButton.vue";
+    import {writeNewMessage} from "../../mixins/writeNewMessageMixin";
 
     export default {
         components: {LikedButton},
-        props: ['img', 'isMobile', 'profileUserGuest', 'accountPreview_min'],
+        props: ['img', 'profileUserGuest', 'accountPreview_min'],
         name: "userGuest",
+        mixins:[writeNewMessage],
         computed: {
             ...mapState({
                 userProfile: state => state.storeUserProfile.userProfile,
-                chats: state => state.storeMessages.chats,
             }),
-        },
-        methods: {
-            ...mapMutations(['writeNewMessageAndNewChatMutation','setToUpChatMutation']),
-
-            writeNewMessage(userTo) {
-                let index = this.checkMessage(userTo)
-                const userFrom = this.userProfile
-                if (index === undefined) {
-                    const chat = {
-                        members: [userTo, userFrom],
-                        messages: [],
-                        numberOfNewMessage: 0
-                    }
-                    this.writeNewMessageAndNewChatMutation(chat)
-                }else {
-                    this.setToUpChatMutation(index)
-                }
-            },
-            checkMessage(userTo) {
-                if (this.chats) {
-                    for (let i = 0; i < this.chats.length; i++) {
-                        for (let y = 0; y < this.chats[i].members.length; y++) {
-                            if (this.chats[i].members[y].id === userTo.id) {
-                                return i
-                                break
-                            }
-                        }
-                    }
-                    return undefined
-                } else {
-                    return undefined
-                }
-            },
         }
     }
 </script>
