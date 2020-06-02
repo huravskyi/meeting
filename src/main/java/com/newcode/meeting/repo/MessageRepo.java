@@ -26,10 +26,8 @@ public interface MessageRepo extends JpaRepository<Message, Long> {
 
     Page<Message> findByChat(Chat chat, Pageable pageable);
 
-    //    Page<Message> findByChatAnd(Chat chat,  Pageable pageable);
     Page<Message> findByChatAndViewedPage(Chat chat, boolean viewedPage, Pageable pageable);
 
-    //    Page<Message> findByChatAndViewedPage(Chat chat, boolean viewedPage, Pageable pageable);
     Page<Message> findByChatAndViewedPageOrderByIdAsc(Chat chat, boolean viewedPage, Pageable pageable);
     Page<Message> findByIdInAndChatOrderByIdAsc(Set<Long> ids, Chat chat, Pageable pageable);
 
