@@ -37,7 +37,7 @@
                     <span>Загрузить больше сообщений</span>
                 </v-tooltip>
             </div>
-            <list-messages style="border: 3px double #0a70ff "
+            <list-messages
                     :chatBlock="chatsBlock"
                     :chats="chats"
                     :selected="selected"
