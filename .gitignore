@@ -33,4 +33,5 @@ out/
 
 # Project exclude paths
 /node_modules/
-/src/main/resources/static/js
+/src/main/resources/static
+/serviceAccountKey.json

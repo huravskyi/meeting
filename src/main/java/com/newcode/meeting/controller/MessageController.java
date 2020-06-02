@@ -33,7 +33,6 @@ public class MessageController {
         return messageService.getNewListOldMessageListForChat(chat, author);
     }
 
-
     @PostMapping
     @JsonView(Views.IdMessage.class)
     public Message saveMessage(

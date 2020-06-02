@@ -15,16 +15,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
-
 
     public WebSecurityConfig(UserService userService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
     }
-
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {

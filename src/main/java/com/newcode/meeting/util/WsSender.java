@@ -16,9 +16,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class WsSender {
-    //    отвечае за очередь и отправку сообщениц
     private SimpMessagingTemplate simpMessagingTemplate;
-    //    сирелезует и дисерелезует обекты
     private ObjectWriter writerMessage;
     private ObjectWriter writerChat;
     private ObjectWriter writerChatDto;
@@ -35,7 +33,6 @@ public class WsSender {
                 .setConfig(mapper.getSerializationConfig())
                 .writerWithView(Views.ChatIdName.class);
     }
-
 
     public void wsSender(Message message, User userTo, ObjectType objectType, EventType eventType) throws JsonProcessingException {
         String value = writerMessage.writeValueAsString(message);
