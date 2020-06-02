@@ -47,7 +47,6 @@ processResources.dependsOn(buildFront)
 repositories {
 	mavenCentral()
 }
-////перед деплоем устанавливам для нодаheroku login
 node {
 	download = true
 }
