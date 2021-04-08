@@ -2,7 +2,6 @@ package com.newcode.meeting.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.newcode.meeting.domain.User;
-import com.newcode.meeting.domain.UserView;
 import com.newcode.meeting.domain.Views;
 import com.newcode.meeting.domain.dto.UserViewDto;
 import com.newcode.meeting.service.UserViewService;
@@ -12,7 +11,6 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("userView")
