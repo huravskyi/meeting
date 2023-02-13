@@ -1,9 +1,12 @@
 package com.newcode.meeting.component;
 
+import com.newcode.meeting.domain.User;
 import com.newcode.meeting.service.UserOnlineService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.event.EventListener;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.messaging.SessionConnectedEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
@@ -38,6 +41,10 @@ public class WebSocketEventListener {
 
 
     private Long getUserId(Principal principal) {
+
+//        User user  = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        System.out.println("user = " + user);
+//        String email = ((User)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getEmail();
         String userString = principal.toString();
         int startIndex = userString.indexOf("id=");
         int endIndex = userString.indexOf(",", startIndex);

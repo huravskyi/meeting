@@ -21,8 +21,10 @@ public class MailConfig {
     private int port;
     @Value("${spring.mail.protocol}")
     private String protocol;
-    @Value("${mail.debug}")
+    @Value("${spring.mail.debug}")
     private String debug;
+    @Value("${spring.mail.properties.mail.smtp.auth}")
+    private String auth;
 
     @Bean
     public JavaMailSender getJavaMailSender() {
@@ -31,16 +33,26 @@ public class MailConfig {
         senderImpl.setPort(port);
         senderImpl.setUsername(username);
         senderImpl.setPassword(password);
+        Properties properties = senderImpl.getJavaMailProperties();
 
+        properties.setProperty("mail.transport.protocol", protocol);
+        properties.setProperty("mail.debug", debug);
+        properties.setProperty("mail.properties.mail.smtp.auth", debug);
+        properties.put("mail.smtp.user", "Test Test");
 //        Properties properties = senderImpl.getJavaMailProperties();
 //        properties.setProperty("mail.transport.protocol", protocol);
 //        properties.setProperty("mail.debug", debug);
 
-        Properties props = senderImpl.getJavaMailProperties();
-        props.put("mail.transport.protocol", protocol);
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.debug", debug);
+//        Properties props = senderImpl.getJavaMailProperties();
+//        props.put("mail.transport.protocol", protocol);
+//        props.put("mail.smtp.auth", "true");
+//        props.put("mail.smtp.starttls.enable", "true");
+//        props.put("mail.smtp.starttls.required", "true");
+//        props.put("mail.smtp.ssl.enable", "true");
+//        props.put("mail.debug", debug);
+//        props.put("spring.mail.smtp.user", user);
+//
+//        senderImpl.setJavaMailProperties(props);
         return senderImpl;
     }
 }

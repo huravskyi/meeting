@@ -1,6 +1,5 @@
 package com.newcode.meeting.domain;
 
-
 import com.fasterxml.jackson.annotation.*;
 import com.newcode.meeting.domain.dto.Gender;
 import com.newcode.meeting.dto.Role;
@@ -121,6 +120,10 @@ public class User implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return getRoles();
     }
+//    @Override
+//    public String getUsername(){
+//        return email;
+//    }
 
     @Override
     public boolean isAccountNonExpired() {

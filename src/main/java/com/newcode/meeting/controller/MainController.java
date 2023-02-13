@@ -12,6 +12,7 @@ import com.newcode.meeting.service.MainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,6 +50,12 @@ public class MainController {
 
     @GetMapping
     public String main(Model model, @AuthenticationPrincipal User user) throws JsonProcessingException {
+        System.out.println(user);
+        System.out.println(" @AuthenticationPrincipal User user = " + user);
+        System.out.println(" @AuthenticationPrincipal User user = " + user);
+        System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        System.out.println(SecurityContextHolder.getContext().getAuthentication().getDetails());
+
         if (user != null) {
             user = userRepo.findUserById(user.getId());
             if(user == null)

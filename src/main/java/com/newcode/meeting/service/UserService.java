@@ -74,6 +74,7 @@ public class UserService implements UserDetailsService {
             String city, String region, String country
     ) {
         User userFromDB = userRepo.findByEmail(email);
+        System.out.println("userFromDB = " + userFromDB);
         if (userFromDB != null) {
             return false;
         }
@@ -100,6 +101,10 @@ public class UserService implements UserDetailsService {
         try {
             sendMessage(user, "registration" , password);
         } catch (MailException e) {
+            System.out.println("e = " + e.getCause());
+            System.out.println("e2 = " + e.getLocalizedMessage());
+            e.printStackTrace();
+            e.getMessage();
             return false;
         }
 
