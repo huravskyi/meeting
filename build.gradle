@@ -23,7 +23,7 @@ apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
 group = 'com.newcode'
-version = '0.0.1-SNAPSHOT'
+version = ''
 sourceCompatibility = '1.8'
 
 configurations {
