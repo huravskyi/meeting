@@ -35,12 +35,19 @@ configurations {
 		extendsFrom annotationProcessor
 	}
 }
+//task buildFront(type: NpmTask) {
+//	args = ['build']
+//}
 
-task buildFront(type: YarnTask) {
+//npm_install.dependsOn(npm_cache_clean)
+//buildFront.dependsOn(npm_install)
+//processResources.dependsOn(buildFront)
+
+tasks.register('buildFront', YarnTask) {
 	args = ['build']
 }
 
-yarn_install.dependsOn(yarn_cache_clean)
+//yarn_install.dependsOn(yarn_cache_clean)
 buildFront.dependsOn(yarn_install)
 processResources.dependsOn(buildFront)
 
@@ -48,6 +55,8 @@ repositories {
 	mavenCentral()
 }
 node {
+//	version = "10.15.3"
+	version = "12.13.0"
 	download = true
 }
 dependencies {
